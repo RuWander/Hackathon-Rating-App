@@ -1,0 +1,12 @@
+.event-card{
+  margin-top: 50px;
+  width: 70%;
+}
+
+.event-card-footer {
+  padding: 20px ;
+}
+
+.event-group-card {
+  width: 40%;
+}

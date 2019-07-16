@@ -1,0 +1,20 @@
+<p>group-list works!</p>
+<ul>
+  <li *ngFor="let group of groups | async">
+    {{ group.id }} {{ group.name }}
+  </li>
+</ul>
+
+<ul>
+  <li *ngFor="let ev of evnt | async">
+    {{ ev.id }} 
+    <p *ngFor="let g of ev.Groups">
+      {{g.name}} and 
+      <span *ngFor="let c of g.criteria">
+        Criteria name: {{c.name}} <br>
+        Criteria Value: {{ c.avgValue }}
+
+      </span>
+    </p>
+  </li>
+</ul>
