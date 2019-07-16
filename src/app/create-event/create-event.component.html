@@ -42,7 +42,8 @@
                 placeholder="Write an awesome description for this event here!"></textarea>
             </mat-form-field>
             <div fxLayout='row' fxLayoutAlign='end'>
-              <button class="submitBtn" color="primary" mat-raised-button>SAVE</button>
+              <button *ngIf='editing' class="submitBtn" color="primary" mat-raised-button (click)="updateEvent()">update</button>
+              <button *ngIf='!editing' class="submitBtn" color="primary" mat-raised-button (click)="createEvent()">SAVE</button>
             </div>
           </form>
           <br>

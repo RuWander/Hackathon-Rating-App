@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, DocumentReference } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Event, Group } from './data-types'
 
-interface Group {
-  id: string,
-  description: string,
-  members: string[],
-  name: string
-}
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
+  private eventsCollection: AngularFirestoreCollection<Event>;
+  
+
   constructor(
     private db: AngularFirestore
-  ) { }
+  ) {
+    this.eventsCollection = this.db.collection('events')
+   }
 
 
   getVotes(){
@@ -34,7 +34,7 @@ export class DataService {
   }
 
   getEvents(): Observable<any[]> {
-    const eventsCollection: AngularFirestoreCollection<any> = this.db.collection('events')
+    const eventsCollection: AngularFirestoreCollection<Event> = this.db.collection('events')
     const events: Observable<any[]> = eventsCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data()
@@ -50,4 +50,14 @@ export class DataService {
   getEvent(id: string) {
 
   }
+
+  createEvent(event: Event) {
+    return this.eventsCollection.add(event)
+  }
+
+  updateEvent(id: string, event: Event) {
+    const eventDoc: AngularFirestoreDocument<Event> = this.db.doc('events/'+id);
+    return eventDoc.update(event)
+  }
+
 }

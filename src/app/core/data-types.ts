@@ -1,0 +1,25 @@
+export interface Event {
+  id?: string,
+  title: string,
+  date: string,
+  description: string
+}
+
+export interface Group {
+  id: string,
+  description: string,
+  members: string[],
+  name: string
+}
+
+export interface User {
+  id?: string,
+  firstName: string,
+  lastName: string,
+  roles: string[]
+}
+// TODO: use this interface in the auth service instead of the locally declared one
+export interface authUser {
+  id: string,
+  email: string
+}
