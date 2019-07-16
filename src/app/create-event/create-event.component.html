@@ -1,7 +1,8 @@
 <div fxLayoutAlign="center stretch" fxLayout='column' class='wrapper'>
   <div fxLayout='row'>
     <div fxFlex="70" class='wrapper-content'>
-      <h1>Create Event</h1>
+      <h1 *ngIf='editing; else createHeader'>Update Event</h1>
+      <ng-template #createHeader><h1>Create Event</h1></ng-template>
     </div>
   </div>
   <div fxLayout='row'>

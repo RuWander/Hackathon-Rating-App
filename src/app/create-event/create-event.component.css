@@ -1,7 +1,4 @@
-.create-event-wrapper {
-  
-  /* width: 100%; */
-}
+
 .wrapper {
   padding-top: 50px;
   /* background-color: cornflowerblue; */
@@ -11,14 +8,6 @@
 .wrapper-content {
   /* background-color: chocolate; */
   margin: 0 auto 0 auto;
-}
-
-.main-content {
-  /* background-color: brown; */
-}
-
-.side-content {
-  /* background-color: cadetblue; */
 }
 
 .submitBtn {
