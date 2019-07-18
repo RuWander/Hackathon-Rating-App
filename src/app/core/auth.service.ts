@@ -28,7 +28,7 @@ export class AuthService {
     private router: Router
   ) {
     // Get the auth state, then fetch the Firestore user document or return null
-    console.log('Checking if user is logged in')
+    console.log('Checking if user is logged in');
     // this.afAuth.authState.subscribe(user => {
     //   if (user) {
     //     this.user = user;
@@ -43,7 +43,7 @@ export class AuthService {
   }
 
   async emailPasswordSignin(email: string, password: string) {
-    var result = await this.afAuth.auth.signInWithEmailAndPassword(email, password)
+    const result = await this.afAuth.auth.signInWithEmailAndPassword(email, password);
     this.router.navigate(['dashboard']);
   }
 
