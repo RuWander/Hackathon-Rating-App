@@ -6,6 +6,7 @@ import { DocumentReference, DocumentSnapshot } from '@angular/fire/firestore';
 import { Event, Group } from '../core/data-types';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Timestamp } from 'rxjs/internal/operators/timestamp';
 
 @Component({
   selector: 'app-create-event',
@@ -19,7 +20,7 @@ export class CreateEventComponent implements OnInit {
   criteria = [{name: 'Project Concept'}, {name: 'Technical Innovation'}, {name: 'Interaction Exploration'}];
   groups = [{name: 'The Cool Kids'}, {name: 'Not your parents'}];
   private currentEvent$: Observable<Event>;
-  private event: Event;
+  event: Event;
 
 
   constructor(
@@ -51,11 +52,13 @@ export class CreateEventComponent implements OnInit {
       // console.log(`this is the ID: ${this.id}`)
       this.currentEvent$ = this.dataService.getEvent(this.id);
       this.currentEvent$.subscribe(e => {
+        this.event = e;
         this.eventForm.patchValue({
           title: e.title,
-          date: 1720800,
+          date: e.date,
           description: e.description
         });
+        
       });
       console.log(this.event);
     }
@@ -78,6 +81,10 @@ export class CreateEventComponent implements OnInit {
 
   updateEvent() {
     this.dataService.updateEvent(this.id, this.eventForm.value);
+  }
+
+  addCriteria() {
+    this.dataService.addEventCriteria(this.id, this.criteriaForm.value);
   }
 
 }

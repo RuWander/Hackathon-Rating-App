@@ -17,6 +17,7 @@ export class DataService {
     private db: AngularFirestore
   ) {
     this.eventsCollection = this.db.collection('events');
+    this.criteriaCollection = this.db.collection('criteria');
    }
 
 
@@ -49,6 +50,7 @@ export class DataService {
 
   getEvent(id: string) {
     const eventDoc: AngularFirestoreDocument<Event> = this.db.doc<Event>('events/' + id);
+    console.log("EventDOC" + eventDoc)
     const event: Observable<Event> = eventDoc.valueChanges();
     return event;
   }
@@ -57,15 +59,67 @@ export class DataService {
     return this.eventsCollection.add(event);
   }
 
-  addEventCriteria(criteria: Criteria) {
-    // TODO: this should do a batch create to the event, event groups and to the individual criterial
-    return;
+  addEventCriteria(eventId: string, criteria: Criteria) {
+    const eventRef = this.db.firestore.collection('events').doc(eventId);
+    const criteriaRef = this.db.firestore.collection('criteria').doc();
+    const setCriteria = criteriaRef.set(criteria);
 
+    let transaction = this.db.firestore.runTransaction(t => {
+      return t.get(criteriaRef)
+      .then(doc => {
+        if (doc) {
+          return doc;
+        } else {
+          console.log('No criteria document exists');
+        }
+      })
+      .then(critDoc => {
+        return t.get(eventRef).then(doc => {
+          const d = doc.data();
+          const c = critDoc.data();
+          const newCritDoc = {id: critDoc.id, ...c};
+
+          if (doc) {
+            console.log(newCritDoc);
+            t.update(criteriaRef, critDoc.data());
+            if (d.criteria) {
+              d.criteria.push(newCritDoc);
+              const groups = d.groups;
+              if (groups) {
+                groups.forEach(group => {
+                  const groupCriteria = group.criteria;
+                  const groupCrit = {value: 0, votes: 0, ...newCritDoc};
+                  if (group.criteria) {
+                    console.log(groupCriteria);
+                    groupCriteria.push(groupCrit);
+                  } else {
+                    group.criteria = [groupCrit];
+                  }
+                });
+              }
+              t.set(eventRef, d, { merge: true });
+            } else {
+              t.set(eventRef, {criteria: [newCritDoc]}, { merge: true });
+            }
+
+          } else {
+            console.log('No event document exists');
+          }
+        });
+      })
+      .catch(err => console.log('Doc does not exist: ', err));
+    })
+    .then(result => console.log('Transaction successful: ', result))
+    .catch(err => console.log('Transaction failure: ', err));
   }
 
   updateEvent(id: string, event: Event) {
     const eventDoc: AngularFirestoreDocument<Event> = this.db.doc('events/' + id);
     return eventDoc.update(event);
+  }
+
+  addGroup(eventId: string, criteria: Criteria) {
+
   }
 
 }
