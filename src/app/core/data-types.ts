@@ -4,6 +4,8 @@ export interface Event {
   title: string;
   date: Date;
   description: string;
+  groups?: Group[];
+  criteria?: Criteria[];
 }
 
 export interface Group {
@@ -11,6 +13,7 @@ export interface Group {
   description: string;
   members: string[];
   name: string;
+  criteria?: Criteria;
 }
 
 export interface User {

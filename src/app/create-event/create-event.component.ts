@@ -42,7 +42,7 @@ export class CreateEventComponent implements OnInit {
   });
 
   groupForm = new FormGroup({
-    group: new FormControl('')
+    name: new FormControl('')
   });
 
   ngOnInit() {
@@ -58,7 +58,7 @@ export class CreateEventComponent implements OnInit {
           date: e.date,
           description: e.description
         });
-        
+
       });
       console.log(this.event);
     }
@@ -85,6 +85,10 @@ export class CreateEventComponent implements OnInit {
 
   addCriteria() {
     this.dataService.addEventCriteria(this.id, this.criteriaForm.value);
+  }
+
+  addGroup() {
+    this.dataService.addGroup(this.id, this.groupForm.value);
   }
 
 }

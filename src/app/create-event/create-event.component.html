@@ -53,9 +53,9 @@
             <h3>ADD CRITERIA</h3>
             <p>Add the criteria that the teams will be marked on!</p>
             <mat-list dense>
-              <mat-list-item *ngFor="let crit of criteria">
+              <mat-list-item *ngFor="let crit of event?.criteria">
                 <mat-icon mat-list-icon>star_border</mat-icon>
-                <h4 mat-line>{{crit.name}}</h4>
+                <h4 mat-line>{{crit.criteria}} ( {{ crit.critStart }} / {{ crit.critEnd }} )</h4>
                 <mat-divider></mat-divider>
               </mat-list-item>
             </mat-list>
@@ -88,51 +88,27 @@
       </mat-card>
       <mat-card fxFlex="40" fxFlex.xs='100' fxFlex.sm='100' class='side-content'>
         <mat-card-content>
-          <!-- <form [formGroup]="criteriaForm" fxLayout='column'>
-            <h3>ADD CRITERIA</h3>
-            <p>Add the criteria that the teams will be marked on!</p>
-            <mat-list dense>
-              <mat-list-item *ngFor="let crit of criteria">
-                <mat-icon mat-list-icon>star_border</mat-icon>
-                <h4 mat-line>{{crit.name}}</h4>
-                <mat-divider></mat-divider>
-              </mat-list-item>
-            </mat-list>
-            <br>
-
-            <div fxLayout='row'>
-              <mat-form-field fxFlex='60'>
-                <input matInput formControlName="criteria" placeholder="Input">
-              </mat-form-field>
-            </div>
-
-            <button class="submitBtn" mat-raised-button>
-              <mat-icon>add</mat-icon>
-            </button>
-          </form> -->
-
-
           <form [formGroup]="groupForm" fxLayout='column'>
             <h3>ADD GROUP</h3>
             <p>Add the event groups here!</p>
 
             <div fxLayout='column' fxLayoutGap="20px">
-              <mat-card *ngFor='let group of groups'>
+              <mat-card *ngFor='let group of event?.groups'>
                 <mat-card-content>
                   <h3>{{group.name}}</h3>
                 </mat-card-content>
               </mat-card>
             </div>
-
+            <br>
             <div fxLayout='row'>
               <mat-form-field fxFlex='60'>
-                <input matInput formControlName="group" placeholder="Group name">
+                <input matInput formControlName="name" placeholder="Group name">
               </mat-form-field>
 
 
 
             </div>
-            <button class="submitBtn" mat-raised-button>
+            <button class="submitBtn" (click)='addGroup()' mat-raised-button>
               <mat-icon>add</mat-icon>
             </button>
           </form>

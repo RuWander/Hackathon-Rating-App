@@ -64,7 +64,7 @@ export class DataService {
     const criteriaRef = this.db.firestore.collection('criteria').doc();
     const setCriteria = criteriaRef.set(criteria);
 
-    let transaction = this.db.firestore.runTransaction(t => {
+    const transaction = this.db.firestore.runTransaction(t => {
       return t.get(criteriaRef)
       .then(doc => {
         if (doc) {
@@ -118,8 +118,53 @@ export class DataService {
     return eventDoc.update(event);
   }
 
-  addGroup(eventId: string, criteria: Criteria) {
+  addGroup(eventId: string, group: Group) {
+    const eventRef = this.db.firestore.collection('events').doc(eventId);
+    const groupRef = this.db.firestore.collection('groups').doc();
+    // const setCriteria = groupRef.set(group);
+
+    const transaction = this.db.firestore.runTransaction(t => {
+      return t.get(eventRef)
+      .then(doc => {
+        if (doc) {
+          return doc;
+        } else {
+          console.log('No event document exists');
+        }
+      })
+      .then(eventDoc => {
+        return t.get(groupRef).then(doc => {
+          if (doc) {
+            const eventData = eventDoc.data();
+            const eventGroups = eventData.groups;
+            t.set(doc.ref, group);
+            if (eventData.groups) {
+              eventGroups.push(group);
+              eventGroups.forEach(g => {
+                g.criteria = [...eventData.criteria];
+              });
+              const newEvent = eventData;
+              t.set(eventRef, newEvent, {merge: true});
+            } else {
+              t.set(eventRef, group);
+            }
+          } else {
+            console.log('Cannot find group');
+          }
+        }).catch(err => {
+          console.log('Cant Get Group');
+        });
+      })
+      .catch(err => {
+        console.log('No Event Doc available: ', err);
+      });
+
+  }).then(result => {
+    console.log('Transaction successful!');
+  })
+  .catch(err => {
+    console.log('Transaction failed: ', err);
+  });
 
   }
-
 }
