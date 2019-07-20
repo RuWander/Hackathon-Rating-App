@@ -50,7 +50,6 @@ export class DataService {
 
   getEvent(id: string) {
     const eventDoc: AngularFirestoreDocument<Event> = this.db.doc<Event>('events/' + id);
-    console.log("EventDOC" + eventDoc)
     const event: Observable<Event> = eventDoc.valueChanges();
     return event;
   }
@@ -135,9 +134,9 @@ export class DataService {
       .then(eventDoc => {
         return t.get(groupRef).then(doc => {
           if (doc) {
+            t.set(doc.ref, group);
             const eventData = eventDoc.data();
             const eventGroups = eventData.groups;
-            t.set(doc.ref, group);
             if (eventData.groups) {
               eventGroups.push(group);
               eventGroups.forEach(g => {
@@ -146,25 +145,38 @@ export class DataService {
               const newEvent = eventData;
               t.set(eventRef, newEvent, {merge: true});
             } else {
-              t.set(eventRef, group);
+              const newEvent = eventData.groups = [group];
+              t.set(eventRef, newEvent);
             }
           } else {
             console.log('Cannot find group');
           }
         }).catch(err => {
-          console.log('Cant Get Group');
+          console.log('Cant Get Group: ', err);
         });
       })
       .catch(err => {
         console.log('No Event Doc available: ', err);
       });
 
-  }).then(result => {
-    console.log('Transaction successful!');
-  })
-  .catch(err => {
-    console.log('Transaction failed: ', err);
-  });
+    }).then(result => {
+      console.log('Transaction successful!');
+    })
+    .catch(err => {
+      console.log('Transaction failed: ', err);
+    });
 
   }
+
+  deleteGroupFromEvent(eventId: string, index: number) {
+    const eventDoc: AngularFirestoreDocument<Event> = this.db.doc<Event>('events/' + eventId);
+    eventDoc.valueChanges().subscribe(doc => {
+      doc.groups.splice(index,1);
+      const newDoc = doc;
+      eventDoc.update(newDoc);
+    });
+
+  }
+
+
 }

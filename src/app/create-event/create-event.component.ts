@@ -91,4 +91,8 @@ export class CreateEventComponent implements OnInit {
     this.dataService.addGroup(this.id, this.groupForm.value);
   }
 
+  removeGroup(index: number) {
+    this.dataService.deleteGroupFromEvent(this.id, index)
+  }
+
 }

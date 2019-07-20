@@ -93,9 +93,10 @@
             <p>Add the event groups here!</p>
 
             <div fxLayout='column' fxLayoutGap="20px">
-              <mat-card *ngFor='let group of event?.groups'>
+              <mat-card *ngFor='let group of event?.groups; let i = index'>
                 <mat-card-content>
                   <h3>{{group.name}}</h3>
+                  <button (click)="removeGroup(i)"><mat-icon>delete</mat-icon></button>
                 </mat-card-content>
               </mat-card>
             </div>
