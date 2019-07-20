@@ -92,7 +92,12 @@ export class CreateEventComponent implements OnInit {
   }
 
   removeGroup(index: number) {
-    this.dataService.deleteGroupFromEvent(this.id, index)
+    this.dataService.deleteGroupFromEvent(this.id, index);
+  }
+
+  removeCritFromEvent(critId: string) {
+    console.log(critId);
+    this.dataService.removeCriteriaFromEvent(this.id, critId);
   }
 
 }

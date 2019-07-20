@@ -13,7 +13,7 @@ export interface Group {
   description: string;
   members: string[];
   name: string;
-  criteria?: Criteria;
+  criteria?: Criteria[];
 }
 
 export interface User {
