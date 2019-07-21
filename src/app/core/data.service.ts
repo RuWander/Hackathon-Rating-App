@@ -145,8 +145,8 @@ export class DataService {
               const newEvent = eventData;
               t.set(eventRef, newEvent, {merge: true});
             } else {
-              const newEvent = eventData.groups = [group];
-              t.set(eventRef, newEvent);
+              eventData.groups = [group];
+              t.set(eventRef, eventData, {merge: true});
             }
           } else {
             console.log('Cannot find group');
