@@ -3,6 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DataService } from '../core/data.service';
+import { Router } from '@angular/router';
 
 interface Group {
   id: string,
@@ -18,27 +19,23 @@ interface Group {
 })
 export class GroupListComponent implements OnInit {
 
-  private groupsCollection: AngularFirestoreCollection<Group>;
-  private groups: Observable<Group[]>;
-  private evnt: Observable<any[]>;
+  private groups$: Observable<Group[]>;
 
   constructor(
-    private dataService: DataService
+    private dataService: DataService,
+    private router: Router
   ) { }
 
   ngOnInit() {
-    this.groupsCollection = this.dataService.getGroups();
-    this.groups = this.groupsCollection.snapshotChanges().pipe(
-      map(actions => actions.map(a => {
-        const data = a.payload.doc.data() as Group;
-        const id = a.payload.doc.id;
-        console.log({id, ...data})
-        return {id, ...data}
-      }
-      ))
-    )
-    this.evnt = this.dataService.getEvents()
-    console.log(typeof this.groups)
+    this.groups$ = this.dataService.getGroups().pipe();
+  }
+
+  goToGroup(groupId: string) {
+    this.router.navigate(['groups/' + groupId]);
+  }
+
+  removeGroup(groupId: string) {
+    console.log('Group Id: ' + groupId);
   }
 
 }

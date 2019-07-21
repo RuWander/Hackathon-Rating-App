@@ -14,7 +14,7 @@
               <mat-icon mat-list-icon>star_border</mat-icon>
               <h1 mat-line>{{ event.title }}</h1>
               <p mat-line>{{ event.description }}</p>
-              <button mat-icon-button color='warn' (click)="removeEvent(eventId)">
+              <button mat-icon-button color='warn' (click)="removeEvent(event.id)">
                 <mat-icon mat-list-icon>highlight_off</mat-icon>
               </button>
               <mat-divider></mat-divider>

@@ -25,9 +25,18 @@ export class DataService {
     return this.db.collection('votes').snapshotChanges();
   }
 
-  getGroups() {
-    console.log('calling the db groups method');
-    return this.db.collection<Group>('groups');
+  getGroups(): Observable<Group[]> {
+    const groupsCollection: AngularFirestoreCollection<Group> = this.db.collection('groups');
+    const groups: Observable<Group[]> = groupsCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data();
+        const id = a.payload.doc.id;
+        return {id, ...data};
+      }
+      ),
+      shareReplay(1))
+    );
+    return groups;
   }
 
   getGroup(id: string) {

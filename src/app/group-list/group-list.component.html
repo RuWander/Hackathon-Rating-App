@@ -1,20 +1,26 @@
-<p>group-list works!</p>
-<ul>
-  <li *ngFor="let group of groups | async">
-    {{ group.id }} {{ group.name }}
-  </li>
-</ul>
-
-<ul>
-  <li *ngFor="let ev of evnt | async">
-    {{ ev.id }} 
-    <p *ngFor="let g of ev.Groups">
-      {{g.name}} and 
-      <span *ngFor="let c of g.criteria">
-        Criteria name: {{c.name}} <br>
-        Criteria Value: {{ c.avgValue }}
-
-      </span>
-    </p>
-  </li>
-</ul>
+<div fxLayoutAlign="center stretch" fxLayout='column' class='wrapper'>
+  <div fxLayout='row'>
+    <div fxFlex="70" class='wrapper-content'>
+      <h1>Groups List</h1>
+    </div>
+  </div>
+  <div fxLayout='row'>
+    <div fxFlex="70" fxLayout='row' fxLayout.xs='column' fxLayout.sm='column' fxLayoutAlign="center start"
+      fxLayoutAlign.xs="center stretch" fxLayoutAlign.sm="center stretch" fxLayoutGap="20px" class='wrapper-content'>
+      <mat-card fxFlex="100" fxFlex.xs='100' fxFlex.sm='100' class="main-content">
+        <mat-card-content>
+          <mat-list>
+            <mat-list-item style='cursor: pointer;' *ngFor="let group of groups$ | async" (click)='goToGroup(group.id)'>
+              <mat-icon mat-list-icon>star_border</mat-icon>
+              <h1 mat-line>{{ group.name }}</h1>
+              <button mat-icon-button color='warn' (click)="removeGroup(group.id)">
+                <mat-icon mat-list-icon>highlight_off</mat-icon>
+              </button>
+              <mat-divider></mat-divider>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

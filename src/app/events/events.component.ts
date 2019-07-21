@@ -27,6 +27,6 @@ export class EventsComponent implements OnInit {
   }
 
   removeEvent(eventId: string) {
-    console.log('removing event');
+    console.log('removing event' + eventId);
   }
 }
