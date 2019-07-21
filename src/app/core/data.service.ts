@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, DocumentReference } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 import { Event, Group, Criteria } from './data-types';
 
 
@@ -34,15 +34,16 @@ export class DataService {
     return `This is the group ID: ${id}`;
   }
 
-  getEvents(): Observable<any[]> {
+  getEvents(): Observable<Event[]> {
     const eventsCollection: AngularFirestoreCollection<Event> = this.db.collection('events');
-    const events: Observable<any[]> = eventsCollection.snapshotChanges().pipe(
+    const events: Observable<Event[]> = eventsCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data();
         const id = a.payload.doc.id;
         return {id, ...data};
       }
-      ))
+      ),
+      shareReplay(1))
     );
     return events;
 

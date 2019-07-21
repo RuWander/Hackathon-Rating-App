@@ -56,7 +56,7 @@
               <mat-list-item *ngFor="let crit of event?.criteria">
                 <mat-icon mat-list-icon>star_border</mat-icon>
                 <h4 mat-line>{{crit.criteria}} ( {{ crit.critStart }} / {{ crit.critEnd }} )</h4>
-                <button (click)="removeCritFromEvent(crit.id)"><mat-icon mat-list-icon>highlight_off</mat-icon></button>
+                <button mat-icon-button color='warn' (click)="removeCritFromEvent(crit.id)"><mat-icon mat-list-icon>highlight_off</mat-icon></button>
                 <mat-divider></mat-divider>
               </mat-list-item>
             </mat-list>
@@ -97,7 +97,8 @@
               <mat-card *ngFor='let group of event?.groups; let i = index'>
                 <mat-card-content>
                   <h3>{{group.name}}</h3>
-                  <button (click)="removeGroup(i)"><mat-icon>delete</mat-icon></button>
+                  <span fxFlex></span>
+                  <button mat-icon-button color='warn' (click)="removeGroup(i)"><mat-icon>delete</mat-icon></button>
                 </mat-card-content>
               </mat-card>
             </div>

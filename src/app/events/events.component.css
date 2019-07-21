@@ -1,12 +1,14 @@
-.event-card{
-  margin-top: 50px;
-  width: 70%;
+.wrapper {
+  padding-top: 50px;
+  /* background-color: cornflowerblue; */
+  padding-bottom: 50px;
 }
 
-.event-card-footer {
-  padding: 20px ;
+.wrapper-content {
+  /* background-color: chocolate; */
+  margin: 0 auto 0 auto;
 }
 
-.event-group-card {
-  width: 40%;
+.submitBtn {
+  width: 100px;
 }
