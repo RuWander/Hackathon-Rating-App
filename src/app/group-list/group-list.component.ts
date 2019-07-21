@@ -6,10 +6,10 @@ import { DataService } from '../core/data.service';
 import { Router } from '@angular/router';
 
 interface Group {
-  id: string,
-  description: string,
-  members: string[],
-  name: string
+  id: string;
+  description: string;
+  members: string[];
+  name: string;
 }
 
 @Component({

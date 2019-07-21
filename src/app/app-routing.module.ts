@@ -12,17 +12,17 @@ import { GroupDetailComponent } from './group-detail/group-detail.component';
 import { CreateEventComponent } from './create-event/create-event.component';
 
 const routes: Routes = [
-  {path:'', component:HomeComponent},
-  {path:'login', component:LoginPageComponent},
-  {path:'register', component:RegisterPageComponent},
-  {path:'dashboard', component:DashboardComponent},
-  {path:'voting', component:VotingPageComponent},
-  {path:'groups', component:GroupListComponent},
-  {path:'groups/:id', component:GroupDetailComponent},
-  {path:'user', component:UserPageComponent},
-  {path:'events', component:EventsComponent},
-  {path:'events/create-event', component:CreateEventComponent},
-  {path:'events/:id/edit', component:CreateEventComponent}
+  {path: '', component: HomeComponent},
+  {path: 'login', component: LoginPageComponent},
+  {path: 'register', component: RegisterPageComponent},
+  {path: 'dashboard', component: DashboardComponent},
+  {path: 'voting', component: VotingPageComponent},
+  {path: 'groups', component: GroupListComponent},
+  {path: 'groups/:id', component: GroupDetailComponent},
+  {path: 'user', component: UserPageComponent},
+  {path: 'events', component: EventsComponent},
+  {path: 'events/create-event', component: CreateEventComponent},
+  {path: 'events/:id/edit', component: CreateEventComponent}
 ];
 
 @NgModule({
