@@ -203,7 +203,6 @@ export class DataService {
       });
 
       eventDoc.update(doc);
-
     });
   }
 

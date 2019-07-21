@@ -53,9 +53,10 @@ export class CreateEventComponent implements OnInit {
       this.currentEvent$ = this.dataService.getEvent(this.id);
       this.currentEvent$.subscribe(e => {
         this.event = e;
+        const d: any = e.date;
         this.eventForm.patchValue({
           title: e.title,
-          date: e.date,
+          date: d.toDate(),
           description: e.description
         });
 

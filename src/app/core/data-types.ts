@@ -2,7 +2,7 @@
 export interface Event {
   id?: string;
   title: string;
-  date: Date;
+  date: any;
   description: string;
   groups?: Group[];
   criteria?: Criteria[];
