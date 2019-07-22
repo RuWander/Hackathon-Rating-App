@@ -45,22 +45,29 @@ export class DataService {
 
   getEvents(): Observable<Event[]> {
     const eventsCollection: AngularFirestoreCollection<Event> = this.db.collection('events');
-    const events: Observable<Event[]> = eventsCollection.snapshotChanges().pipe(
-      map(actions => actions.map(a => {
-        const data = a.payload.doc.data();
-        const id = a.payload.doc.id;
-        return {id, ...data};
-      }
-      ),
-      shareReplay(1))
+    return eventsCollection.valueChanges({idField: 'id'}).pipe(
+      shareReplay(1)
     );
-    return events;
+    // eventsCollection.snapshotChanges().pipe(
+    //   map(actions => actions.map(a => {
+    //     const data = a.payload.doc.data();
+    //     const id = a.payload.doc.id;
+    //     return {id, ...data};
+    //   }
+    //   ),
+    //   shareReplay(1))
+    // );
+    // const events2: Observable<Event[]> = eventsCollection.valueChanges({idField: 'id'});
+    // return events;
 
   }
 
-  getEvent(id: string) {
-    const eventDoc: AngularFirestoreDocument<Event> = this.db.doc<Event>('events/' + id);
-    const event: Observable<Event> = eventDoc.valueChanges();
+  getEvent(id: string): Observable<Event> {
+    const eventRef: AngularFirestoreDocument<Event> = this.db.doc<Event>('events/' + id);
+    const event: Observable<Event> = eventRef.valueChanges().pipe(
+      shareReplay(1)
+    );
+    console.log(event);
     return event;
   }
 

@@ -11,6 +11,7 @@ import { GroupListComponent } from './group-list/group-list.component';
 import { GroupDetailComponent } from './group-detail/group-detail.component';
 import { CreateEventComponent } from './create-event/create-event.component';
 import { AuthGuard } from './core/auth.guard';
+import { EventDetailComponent } from './event-detail/event-detail.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -22,6 +23,7 @@ const routes: Routes = [
   {path: 'groups/:id', component: GroupDetailComponent},
   {path: 'user', component: UserPageComponent, canActivate: [AuthGuard]},
   {path: 'events', component: EventsComponent},
+  {path: 'events/:id', component: EventDetailComponent},
   {path: 'events/create-event', component: CreateEventComponent},
   {path: 'events/:id/edit', component: CreateEventComponent}
 ];

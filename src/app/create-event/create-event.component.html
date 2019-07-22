@@ -1,20 +1,20 @@
 <div fxLayoutAlign="center stretch" fxLayout='column' class='wrapper'>
   <div fxLayout='row'>
     <div fxFlex="70" class='wrapper-content'>
-      <h1 *ngIf='editing; else createHeader'>Update Event</h1>
-      <ng-template #createHeader><h1>Create Event</h1></ng-template>
+      <div fxLayout='row' fxLayoutAlign="space-between center">
+        <h1 *ngIf='editing; else createHeader'>Update Event</h1>
+        <ng-template #createHeader>
+          <h1>Create Event</h1>
+        </ng-template>
+        <div fxLayoutGap='10px'>
+          <button mat-raised-button color='primary' (click)='doneEditing()'>Done</button>
+        </div>
+      </div>
     </div>
   </div>
   <div fxLayout='row'>
-    <div fxFlex="70"
-        fxLayout='row' 
-        fxLayout.xs='column' 
-        fxLayout.sm='column' 
-        fxLayoutAlign="center start"
-        fxLayoutAlign.xs="center stretch" 
-        fxLayoutAlign.sm="center stretch" 
-        fxLayoutGap="20px" 
-        class='wrapper-content'>
+    <div fxFlex="70" fxLayout='row' fxLayout.xs='column' fxLayout.sm='column' fxLayoutAlign="center start"
+      fxLayoutAlign.xs="center stretch" fxLayoutAlign.sm="center stretch" fxLayoutGap="20px" class='wrapper-content'>
       <mat-card fxFlex="60" fxFlex.xs='100' fxFlex.sm='100' class="main-content">
         <mat-card-content>
 
@@ -42,8 +42,10 @@
                 placeholder="Write an awesome description for this event here!"></textarea>
             </mat-form-field>
             <div fxLayout='row' fxLayoutAlign='end'>
-              <button *ngIf='editing' class="submitBtn" color="primary" mat-raised-button (click)="updateEvent()">update</button>
-              <button *ngIf='!editing' class="submitBtn" color="primary" mat-raised-button (click)="createEvent()">SAVE</button>
+              <button *ngIf='editing' class="submitBtn" color="primary" mat-raised-button
+                (click)="updateEvent()">update</button>
+              <button *ngIf='!editing' class="submitBtn" color="primary" mat-raised-button
+                (click)="createEvent()">SAVE</button>
             </div>
           </form>
           <br>
@@ -56,7 +58,9 @@
               <mat-list-item *ngFor="let crit of event?.criteria">
                 <mat-icon mat-list-icon>star_border</mat-icon>
                 <h4 mat-line>{{crit.criteria}} ( {{ crit.critStart }} / {{ crit.critEnd }} )</h4>
-                <button mat-icon-button color='warn' (click)="removeCritFromEvent(crit.id)"><mat-icon mat-list-icon>highlight_off</mat-icon></button>
+                <button mat-icon-button color='warn' (click)="removeCritFromEvent(crit.id)">
+                  <mat-icon mat-list-icon>highlight_off</mat-icon>
+                </button>
                 <mat-divider></mat-divider>
               </mat-list-item>
             </mat-list>
@@ -98,7 +102,9 @@
                 <mat-card-content>
                   <h3>{{group.name}}</h3>
                   <span fxFlex></span>
-                  <button mat-icon-button color='warn' (click)="removeGroup(i)"><mat-icon>delete</mat-icon></button>
+                  <button mat-icon-button color='warn' (click)="removeGroup(i)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
                 </mat-card-content>
               </mat-card>
             </div>

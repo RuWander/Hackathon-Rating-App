@@ -27,6 +27,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { GroupListComponent } from './group-list/group-list.component';
 import { GroupDetailComponent } from './group-detail/group-detail.component';
 import { CreateEventComponent } from './create-event/create-event.component';
+import { EventDetailComponent } from './event-detail/event-detail.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { CreateEventComponent } from './create-event/create-event.component';
     EventsComponent,
     GroupListComponent,
     GroupDetailComponent,
-    CreateEventComponent
+    CreateEventComponent,
+    EventDetailComponent
   ],
   imports: [
     BrowserModule,

@@ -23,7 +23,7 @@ export class EventsComponent implements OnInit {
     this.events$ = this.dataService.getEvents().pipe();
   }
   goToEvent(eventId: string) {
-    this.router.navigate(['events/' + eventId + '/edit']);
+    this.router.navigate(['events/' + eventId]);
   }
 
   removeEvent(eventId: string) {

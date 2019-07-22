@@ -17,8 +17,6 @@ export class CreateEventComponent implements OnInit {
 
   id = '';
   editing = false;
-  criteria = [{name: 'Project Concept'}, {name: 'Technical Innovation'}, {name: 'Interaction Exploration'}];
-  groups = [{name: 'The Cool Kids'}, {name: 'Not your parents'}];
   private currentEvent$: Observable<Event>;
   event: Event;
 
@@ -99,6 +97,10 @@ export class CreateEventComponent implements OnInit {
   removeCritFromEvent(critId: string) {
     console.log(critId);
     this.dataService.removeCriteriaFromEvent(this.id, critId);
+  }
+
+  doneEditing() {
+    this.router.navigate(['events', this.id]);
   }
 
 }

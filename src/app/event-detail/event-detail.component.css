@@ -1,0 +1,16 @@
+
+.wrapper {
+  padding-top: 50px;
+  /* background-color: cornflowerblue; */
+  padding-bottom: 50px;
+}
+
+.wrapper-content {
+  /* background-color: chocolate; */
+  margin: 0 auto 0 auto;
+}
+
+.submitBtn {
+  width: 100px;
+}
+
