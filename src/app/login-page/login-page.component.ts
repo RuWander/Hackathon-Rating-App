@@ -14,9 +14,9 @@ export class LoginPageComponent {
   error = '';
 
   constructor(
-    private autService: AuthService
-  ) { 
-    //TODO: redirect the user to the dashboard if loggedin and toast to let them know that they are loggedin
+    private authService: AuthService
+  ) {
+    // TODO: redirect the user to the dashboard if loggedin and toast to let them know that they are loggedin
   }
 
   loginForm = new FormGroup({
@@ -25,16 +25,14 @@ export class LoginPageComponent {
   });
 
   onSubmit() {
-    let values = this.loginForm.value
-    if (values.email == ''){
-      this.error = 'Please enter an email'
-    }else if (values.password == ''){
-      this.error = 'Please enter a password'
+    const values = this.loginForm.value;
+    if (values.email === '') {
+      this.error = 'Please enter an email';
+    } else if (values.password === '') {
+      this.error = 'Please enter a password';
     }
 
-    this.autService.emailPasswordSignin(values.email, values.password)
+    this.authService.emailPasswordSignin(values.email, values.password);
   }
-
-  
 
 }

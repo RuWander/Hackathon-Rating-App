@@ -25,7 +25,18 @@
         <div class="button primary">
             <button mat-button><a routerLink="/register">Register</a></button>
         </div>
+        <div *ngIf='authService.user$ | async as user; else login'>
+          You are loggedin {{ user.firstName }}!
+        </div>
+
+        <ng-template #login>
+          <div class="button primary">
+            <button (click)='authService.googleSignin()' mat-button>Google Signin</button>
+          </div>
+        </ng-template>
+        
       </form>
 
   </mat-card-content>
 </mat-card>
+

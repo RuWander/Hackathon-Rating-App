@@ -10,6 +10,7 @@ import { EventsComponent } from './events/events.component';
 import { GroupListComponent } from './group-list/group-list.component';
 import { GroupDetailComponent } from './group-detail/group-detail.component';
 import { CreateEventComponent } from './create-event/create-event.component';
+import { AuthGuard } from './core/auth.guard';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -19,7 +20,7 @@ const routes: Routes = [
   {path: 'voting', component: VotingPageComponent},
   {path: 'groups', component: GroupListComponent},
   {path: 'groups/:id', component: GroupDetailComponent},
-  {path: 'user', component: UserPageComponent},
+  {path: 'user', component: UserPageComponent, canActivate: [AuthGuard]},
   {path: 'events', component: EventsComponent},
   {path: 'events/create-event', component: CreateEventComponent},
   {path: 'events/:id/edit', component: CreateEventComponent}

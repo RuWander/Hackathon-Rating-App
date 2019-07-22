@@ -1,4 +1,3 @@
-
 export interface Event {
   id?: string;
   title: string;
@@ -17,10 +16,11 @@ export interface Group {
 }
 
 export interface User {
-  id?: string;
-  firstName: string;
-  lastName: string;
-  roles: string[];
+  uid: string;
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  roles?: string[];
 }
 // TODO: use this interface in the auth service instead of the locally declared one
 export interface AuthUser {
