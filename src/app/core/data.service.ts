@@ -150,11 +150,13 @@ export class DataService {
       })
       .then(eventDoc => {
         return t.get(groupRef).then(doc => {
+          console.log(doc.id);
           if (doc) {
             t.set(doc.ref, group);
             const eventData = eventDoc.data();
             const eventGroups = eventData.groups;
-            if (eventData.groups) {
+            group.id = doc.id;
+            if (eventData.groups && eventGroups.length !== 0) {
               eventGroups.push(group);
               eventGroups.forEach(g => {
                 g.criteria = [...eventData.criteria];

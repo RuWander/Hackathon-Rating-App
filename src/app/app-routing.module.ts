@@ -25,7 +25,8 @@ const routes: Routes = [
   {path: 'events', component: EventsComponent},
   {path: 'events/:id', component: EventDetailComponent},
   {path: 'events/create-event', component: CreateEventComponent},
-  {path: 'events/:id/edit', component: CreateEventComponent}
+  {path: 'events/:id/edit', component: CreateEventComponent},
+  {path: 'events/:id/vote/:groupId', component: VotingPageComponent}
 ];
 
 @NgModule({

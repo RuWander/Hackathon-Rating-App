@@ -42,12 +42,13 @@
 
       <mat-card fxFlex="40" fxFlex.xs='100' fxFlex.sm='100' class='side-content'>
         <mat-card-content>
-          <h3>ADD GROUP</h3>
+          <h3>GROUPS</h3>
           <div fxLayout='column' fxLayoutGap="20px">
             <mat-card *ngFor='let group of event.groups; let i = index'>
               <mat-card-content>
                 <h3>{{group.name}}</h3>
                 <span fxFlex></span>
+                <button mat-raised-button color='primary' (click)='voteGroup(group.id)'>Vote</button>
               </mat-card-content>
             </mat-card>
           </div>

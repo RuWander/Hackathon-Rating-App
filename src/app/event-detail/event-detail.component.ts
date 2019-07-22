@@ -35,4 +35,9 @@ export class EventDetailComponent implements OnInit {
     this.router.navigate(['events', this.id, 'edit']);
   }
 
+  voteGroup(groupId: string) {
+    console.log(groupId);
+    this.router.navigate(['events', this.id, 'vote', groupId]);
+  }
+
 }
