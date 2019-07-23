@@ -94,6 +94,7 @@
       <mat-card fxFlex="40" fxFlex.xs='100' fxFlex.sm='100' class='side-content'>
         <mat-card-content>
           <form [formGroup]="groupForm" fxLayout='column'>
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
             <h3>ADD GROUP</h3>
             <p>Add the event groups here!</p>
 
@@ -102,7 +103,7 @@
                 <mat-card-content>
                   <h3>{{group.name}}</h3>
                   <span fxFlex></span>
-                  <button mat-icon-button color='warn' (click)="removeGroup(i)">
+                  <button mat-icon-button color='warn' (click)="removeGroup(group.id)">
                     <mat-icon>delete</mat-icon>
                   </button>
                 </mat-card-content>

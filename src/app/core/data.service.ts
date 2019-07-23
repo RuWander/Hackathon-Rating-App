@@ -188,14 +188,19 @@ export class DataService {
   }
 
   // Need to unsubscribe
-  deleteGroupFromEvent(eventId: string, index: number) {
+  deleteGroupFromEvent(eventId: string, groupId: string) {
     const eventDoc: AngularFirestoreDocument<Event> = this.db.doc<Event>('events/' + eventId);
-    eventDoc.valueChanges().subscribe(doc => {
-      doc.groups.splice(index, 1);
-      const newDoc = doc;
-      eventDoc.update(newDoc);
-    });
+    eventDoc.valueChanges().subscribe(cEvent => {
 
+      const newGroup = cEvent.groups;
+      newGroup.forEach((item, i) => {
+        if (item.id === groupId) {
+          cEvent.groups.splice(i, 1);
+        }
+      });
+      console.log(cEvent);
+      eventDoc.update(cEvent);
+    });
   }
 
   // Need to unsubscribe

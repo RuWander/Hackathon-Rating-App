@@ -6,8 +6,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatDatepickerModule, MatInputModule , MatNativeDateModule} from '@angular/material';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatDatepickerModule, MatInputModule , MatNativeDateModule} from '@angular/material';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   imports:[
@@ -20,7 +21,8 @@ import {MatDatepickerModule, MatInputModule , MatNativeDateModule} from '@angula
     MatFormFieldModule,
     MatDividerModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatProgressBarModule
   ],
   exports:[
     MatIconModule,
@@ -32,7 +34,8 @@ import {MatDatepickerModule, MatInputModule , MatNativeDateModule} from '@angula
     MatFormFieldModule,
     MatDividerModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatProgressBarModule
   ]
 })
-export class MaterialModule { } 
+export class MaterialModule { }
