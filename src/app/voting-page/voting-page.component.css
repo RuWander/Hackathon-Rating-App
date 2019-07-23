@@ -12,3 +12,25 @@
 .submitBtn {
   width: 100px;
 }
+
+.spinnerPos {
+  margin: 0 auto 0 auto;
+}
+
+.spinnerOuter {
+  position:relative;
+}
+
+.spinnerInner {
+ left:50%;
+ top:50%;
+ -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+ transform: translate(-50%, -50%);
+ position:absolute;
+ font-weight: 700;
+}
+
+.sliderPos {
+  margin-top: 30px;
+}

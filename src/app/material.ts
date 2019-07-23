@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatDatepickerModule, MatInputModule , MatNativeDateModule} from '@angular/material';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatSliderModule} from '@angular/material/slider';
 
 @NgModule({
@@ -24,7 +25,8 @@ import {MatSliderModule} from '@angular/material/slider';
     MatDatepickerModule,
     MatNativeDateModule,
     MatProgressBarModule,
-    MatSliderModule
+    MatSliderModule,
+    MatProgressSpinnerModule
   ],
   exports:[
     MatIconModule,
@@ -38,7 +40,8 @@ import {MatSliderModule} from '@angular/material/slider';
     MatDatepickerModule,
     MatNativeDateModule,
     MatProgressBarModule,
-    MatSliderModule
+    MatSliderModule,
+    MatProgressSpinnerModule
   ]
 })
 export class MaterialModule { }

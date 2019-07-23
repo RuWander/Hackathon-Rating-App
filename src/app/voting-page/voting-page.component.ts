@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../core/data.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Event, Group } from '../core/data-types';
+import { Event, Group, Criteria } from '../core/data-types';
 
 @Component({
   selector: 'app-voting-page',
@@ -17,6 +17,7 @@ export class VotingPageComponent implements OnInit {
   private groupId: string;
   private group$: Observable<Event>;
   private eventVoteGroup: Group;
+  private groupCriteria: Criteria[];
 
   constructor(
     private route: ActivatedRoute,
@@ -42,6 +43,7 @@ export class VotingPageComponent implements OnInit {
       g.groups.forEach((item, i) => {
         if (item.id === this.groupId) {
           this.eventVoteGroup = item;
+          this.groupCriteria = [...item.criteria];
         }
       });
     });

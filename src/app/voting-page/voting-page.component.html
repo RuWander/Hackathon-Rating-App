@@ -1,29 +1,43 @@
 <div fxLayoutAlign="center stretch" fxLayout='column' class='wrapper'>
-    <div fxLayout='row'>
-      <div fxFlex="70" class='wrapper-content'>
-        <div fxLayout='row' fxLayoutAlign="space-between center">
-          <h1>Vote for {{ eventVoteGroup.title }}</h1>
-          <div fxLayoutGap='10px'>
-            <button mat-raised-button color='accent' (click)='goBack()'>Back</button>
-          </div>
+  <div fxLayout='row'>
+    <div fxFlex="70" class='wrapper-content'>
+      <div fxLayout='row' fxLayoutAlign="space-between center">
+        <h1>Vote for {{ eventVoteGroup?.name }}</h1>
+        <div fxLayoutGap='10px'>
+          <button mat-raised-button color='accent' (click)='goBack()'>Back</button>
         </div>
       </div>
     </div>
-    <div fxLayout='row'>
-      <div fxFlex="70" fxLayout='row' fxLayout.xs='column' fxLayout.sm='column' fxLayoutAlign="center start"
-        fxLayoutAlign.xs="center stretch" fxLayoutAlign.sm="center stretch" fxLayoutGap="20px" class='wrapper-content'>
-        
-      <!-- {{ group$  | async | json }} -->
-        <mat-card fxFlex="30" fxFlex.xs='100' fxFlex.sm='100' class='side-content' *ngFor='let criteria of eventVoteGroup.criteria; let i = index'>
-          <mat-card-content>
-            <h3>{{criteria.criteria}}</h3>
-            <div fxLayout='column' fxLayoutGap="20px">
-              <mat-slider min="criteria.critStart" max="criteria.critEnd" step="1" value="1.5"></mat-slider>
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-    </div>
-  
-  
   </div>
+  <div fxLayout='row'>
+    <div fxFlex="70" fxLayout='row' fxLayout.xs='column' fxLayout.sm='column' fxLayoutAlign="center start"
+      fxLayoutAlign.xs="center stretch" fxLayoutAlign.sm="center stretch" fxLayoutGap="20px" class='wrapper-content'>
+
+      <!-- {{ group$  | async | json }} -->
+      <mat-card fxFlex="30" fxFlex.xs='100' fxFlex.sm='100' class='side-content'
+        *ngFor='let criteria of groupCriteria; let i = index'>
+        <mat-card-content>
+          <h2>{{criteria.criteria}}</h2>
+          <div fxLayout='column' fxLayoutAlign="center center">
+            <div fxLayoutAlign="center center" class="spinnerOuter">
+              <mat-progress-spinner class="spinnerPos" color="primary" mode="determinate" [value]="criteria.value">
+              </mat-progress-spinner>
+              <div class="spinnerInner">
+                {{ criteria.value }} %
+              </div>
+            </div>
+          </div>
+          <br>
+          <div fxLayout='column' fxLayoutGap="20px">
+
+            <mat-slider class="sliderPos" min="criteria.critStart" max="criteria.critEnd" step="1" thumbLabel="true"
+              [(value)]="criteria.value">
+            </mat-slider>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+
+</div>
