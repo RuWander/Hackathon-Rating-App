@@ -19,6 +19,7 @@ export class CreateEventComponent implements OnInit {
   editing = false;
   private currentEvent$: Observable<Event>;
   event: Event;
+  groupLoading = false;
 
 
   constructor(
@@ -87,11 +88,16 @@ export class CreateEventComponent implements OnInit {
   }
 
   addGroup() {
+    this.groupLoading = true;
     this.dataService.addGroup(this.id, this.groupForm.value);
+    this.groupLoading = false;
   }
 
   removeGroup(critId: string) {
+    this.groupLoading = true;
+    setTimeout(a => console.log('delay...'), 2000);
     this.dataService.deleteGroupFromEvent(this.id, critId);
+    this.groupLoading = false;
   }
 
   removeCritFromEvent(critId: string) {

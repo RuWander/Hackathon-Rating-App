@@ -94,7 +94,7 @@
       <mat-card fxFlex="40" fxFlex.xs='100' fxFlex.sm='100' class='side-content'>
         <mat-card-content>
           <form [formGroup]="groupForm" fxLayout='column'>
-            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            <mat-progress-bar *ngIf='groupLoading' mode="indeterminate"></mat-progress-bar>
             <h3>ADD GROUP</h3>
             <p>Add the event groups here!</p>
 

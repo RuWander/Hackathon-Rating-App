@@ -40,7 +40,11 @@ export class DataService {
   }
 
   getGroup(id: string) {
-    return `This is the group ID: ${id}`;
+    const groupRef: AngularFirestoreDocument<Event> = this.db.doc<Event>('groups/' + id);
+    const group: Observable<Event> = groupRef.valueChanges().pipe(
+      shareReplay(1)
+    );
+    return group;
   }
 
   getEvents(): Observable<Event[]> {
