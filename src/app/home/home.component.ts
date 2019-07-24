@@ -3,9 +3,9 @@ import { DataService } from '../core/data.service';
 
 interface Vote {
   id: string;
-  voter:string;
+  voter: string;
   criteria: string;
-  value:number;
+  value: number;
 }
 
 @Component({
@@ -17,8 +17,6 @@ interface Vote {
 
 export class HomeComponent implements OnInit {
 
-  
-
   votes: Vote[] = [];
 
   constructor(
@@ -27,18 +25,17 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.dataService.getVotes().subscribe(data => {
-      console.log(`This is the data object from the votes collection: ` + data)
-      this.votes = []
+      console.log(`This is the data object from the votes collection: ` + data);
+      this.votes = [];
       data.forEach(a => {
-        
-        let vote:any = a.payload.doc.data();
-        console.log(`This is the foreach vote:` + JSON.stringify(a.payload.doc.data()))
+        const vote: any = a.payload.doc.data();
+        console.log(`This is the foreach vote:` + JSON.stringify(a.payload.doc.data()));
         vote.id = a.payload.doc.id;
-        this.votes.push(vote)
+        this.votes.push(vote);
       }
 
-      )
-    })
+      );
+    });
   }
 
 }

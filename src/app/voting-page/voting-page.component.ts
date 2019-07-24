@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { DataService } from '../core/data.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -22,6 +23,7 @@ export class VotingPageComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private location: Location,
     private dataService: DataService
   ) { }
 
@@ -50,7 +52,8 @@ export class VotingPageComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['event', this.id]);
+    this.location.back();
+    // this.router.navigate(['event', this.id]);
   }
 
 }

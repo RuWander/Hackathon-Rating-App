@@ -18,6 +18,7 @@ export class AppComponent implements OnDestroy {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+    console.log(this.mobileQuery);
 
   }
 
@@ -25,7 +26,7 @@ export class AppComponent implements OnDestroy {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
-  logout():void {
-    this.authService.logout()
+  logout(): void {
+    this.authService.logout();
   }
 }

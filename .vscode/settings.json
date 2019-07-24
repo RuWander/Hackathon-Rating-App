@@ -6,8 +6,11 @@
     "esnext",
     "firestore",
     "group",
+    "listener",
     "loggedin",
     "mat",
+    "mobile",
+    "query",
     "sidenav",
     "signin",
     "toggle"
