@@ -1,22 +1,31 @@
 <div class="app-container" [class.is-mobile]="mobileQuery.matches">
-  <mat-toolbar color="primary" class="toolbar">
+  <mat-toolbar color="primary" class="toolbar" fxLayout="row">
     <button mat-icon-button (click)="snav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
     <h1 class="app-name">Hack Voting App</h1>
+    <span fxFlex></span>
+    <button *ngIf='loggedIn; else login' mat-icon-button (click)="logout()">
+        <span>Logout</span>
+    </button>
+    <ng-template #login>
+        <button mat-icon-button>
+            Login
+        </button>
+    </ng-template>
   </mat-toolbar>
 
   <mat-sidenav-container class="sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
     <mat-sidenav style="width: 250px;" #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
       fixedTopGap="56">
       <mat-nav-list >
-        <a mat-list-item routerLink="" color="primary">Home</a>
-        <a mat-list-item routerLink="login">Login</a>
-        <a mat-list-item routerLink="register">Signup</a>
-        <a mat-list-item routerLink="groups">Groups</a>
-        <!-- <a mat-list-item routerLink="voting">Vote</a> -->
-        <a mat-list-item routerLink="events">Events</a>
-        <a mat-list-item (click)='logout()'>Logout</a>
+        <a mat-list-item routerLink="" color="primary"><mat-icon class="menu-icons">home</mat-icon>Home</a>
+        
+        <a *ngIf='loggedIn' mat-list-item routerLink="login"><mat-icon class="menu-icons">account_circle</mat-icon>Profile</a>
+        <a *ngIf='!loggedIn' mat-list-item routerLink="login"><mat-icon class="menu-icons">account_circle</mat-icon>Login</a>
+        <a mat-list-item routerLink="events"><mat-icon class="menu-icons">event</mat-icon>Events list</a>
+        <a mat-list-item routerLink="groups"><mat-icon class="menu-icons">group</mat-icon>Groups list</a>
+        <a *ngIf='loggedIn' mat-list-item (click)='logout()'><mat-icon class="menu-icons">exit_to_app</mat-icon>Logout</a>
       </mat-nav-list>
     </mat-sidenav>
 

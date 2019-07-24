@@ -1,14 +1,16 @@
 import {MediaMatcher} from '@angular/cdk/layout';
-import {ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, OnDestroy} from '@angular/core';
 import { AuthService } from './core/auth.service';
+import { User } from 'firebase';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'HackApp';
+  loggedIn = false;
 
   mobileQuery: MediaQueryList;
 
@@ -20,6 +22,15 @@ export class AppComponent implements OnDestroy {
     this.mobileQuery.addListener(this._mobileQueryListener);
     console.log(this.mobileQuery);
 
+  }
+  ngOnInit() {
+    this.authService.user$.subscribe(u => {
+      if (u) {
+        this.loggedIn = true;
+      } else {
+        this.loggedIn = false;
+      }
+    });
   }
 
   ngOnDestroy(): void {
