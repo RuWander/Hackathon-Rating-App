@@ -35,7 +35,7 @@ export class CreateEventComponent implements OnInit {
   });
 
   criteriaForm = new FormGroup({
-    criteria: new FormControl(''),
+    name: new FormControl(''),
     critStart: new FormControl(''),
     critEnd: new FormControl('')
   });
@@ -46,16 +46,21 @@ export class CreateEventComponent implements OnInit {
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
+    console.log(`This is the ID: ${this.id}`)
     if (this.id) {
       this.editing = true;
       // console.log(`this is the ID: ${this.id}`)
       this.currentEvent$ = this.dataService.getEvent(this.id);
       this.currentEvent$.subscribe(e => {
         this.event = e;
-        const d: any = e.date;
+        console.log('This is the event:' + e);
+        let d: any = '';
+        if (e.date) {
+          d = e.date.toDate();
+        }
         this.eventForm.patchValue({
           title: e.title,
-          date: d.toDate(),
+          date: d,
           description: e.description
         });
 
@@ -64,7 +69,7 @@ export class CreateEventComponent implements OnInit {
     }
     // this.group = this.dataService.getGroup(id);
     this.criteriaForm.setValue({
-      criteria: '',
+      name: '',
       critStart: 0,
       critEnd: 100
     });

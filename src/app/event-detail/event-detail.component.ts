@@ -25,8 +25,15 @@ export class EventDetailComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id');
     this.event$ = this.dataService.getEvent(this.id).pipe(
       map(data => {
-        data.date = data.date.toDate();
-        return data;
+        if (data) {
+          console.log('this is the data: ' + data);
+          if (data.date) {
+            data.date = data.date.toDate();
+          }
+          return data;
+        } else {
+          console.log('There is no event document yet')
+        }
       })
     );
   }

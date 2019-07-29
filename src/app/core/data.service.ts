@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, DocumentReference } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, DocumentReference, Action, DocumentSnapshotExists, DocumentSnapshotDoesNotExist } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import { Event, Group, Criteria } from './data-types';
+import { Event, Group, Criteria, VoteDocument, Vote } from './data-types';
+import { firestore } from 'firebase';
 
 
 @Injectable({
@@ -27,24 +28,19 @@ export class DataService {
 
   getGroups(): Observable<Group[]> {
     const groupsCollection: AngularFirestoreCollection<Group> = this.db.collection('groups');
-    const groups: Observable<Group[]> = groupsCollection.snapshotChanges().pipe(
-      map(actions => actions.map(a => {
-        const data = a.payload.doc.data();
-        const id = a.payload.doc.id;
-        return {id, ...data};
-      }
-      ),
-      shareReplay(1))
+    return groupsCollection.valueChanges({idField: 'id'}).pipe(
+      shareReplay(1)
     );
-    return groups;
   }
 
   getGroup(id: string) {
-    const groupRef: AngularFirestoreDocument<Event> = this.db.doc<Event>('groups/' + id);
-    const group: Observable<Event> = groupRef.valueChanges().pipe(
+    const groupRef: AngularFirestoreDocument<Group> = this.db.doc<Group>('groups/' + id);
+    const groupDoc =  groupRef.valueChanges().pipe(
       shareReplay(1)
     );
-    return group;
+    // console.log(groupDoc);
+    return groupDoc;
+
   }
 
   getEvents(): Observable<Event[]> {
@@ -52,18 +48,6 @@ export class DataService {
     return eventsCollection.valueChanges({idField: 'id'}).pipe(
       shareReplay(1)
     );
-    // eventsCollection.snapshotChanges().pipe(
-    //   map(actions => actions.map(a => {
-    //     const data = a.payload.doc.data();
-    //     const id = a.payload.doc.id;
-    //     return {id, ...data};
-    //   }
-    //   ),
-    //   shareReplay(1))
-    // );
-    // const events2: Observable<Event[]> = eventsCollection.valueChanges({idField: 'id'});
-    // return events;
-
   }
 
   getEvent(id: string): Observable<Event> {
@@ -71,7 +55,6 @@ export class DataService {
     const event: Observable<Event> = eventRef.valueChanges().pipe(
       shareReplay(1)
     );
-    console.log(event);
     return event;
   }
 
@@ -100,7 +83,7 @@ export class DataService {
           const newCritDoc = {id: critDoc.id, ...c};
 
           if (doc) {
-            console.log(newCritDoc);
+            // console.log(newCritDoc);
             t.update(criteriaRef, critDoc.data());
             if (d.criteria) {
               d.criteria.push(newCritDoc);
@@ -160,16 +143,24 @@ export class DataService {
             const eventData = eventDoc.data();
             const eventGroups = eventData.groups;
             group.id = doc.id;
+            const newGroupCriteria = [...eventData.criteria];
+            newGroupCriteria.map(c => {
+              c.value = 0;
+              c.vote = 0;
+              return c;
+            });
             if (eventData.groups && eventGroups.length !== 0) {
               eventGroups.push(group);
               eventGroups.forEach(g => {
-                g.criteria = [...eventData.criteria];
+                g.criteria = [...newGroupCriteria];
               });
               const newEvent = eventData;
               t.set(eventRef, newEvent, {merge: true});
             } else {
               eventData.groups = [group];
-              t.set(eventRef, eventData, {merge: true});
+              eventData.groups[0].criteria = [...newGroupCriteria];
+              const newEvent = eventData;
+              t.set(eventRef, newEvent, {merge: true});
             }
           } else {
             console.log('Cannot find group');
@@ -233,5 +224,80 @@ export class DataService {
       eventDoc.update(doc);
     });
   }
+
+  createVoteForGroup(eventId: string, groupId: string, userId: string, criteria: Criteria[]) {
+    // console.log('the criteria that is not defined: ', criteria);
+    const voteDoc: AngularFirestoreDocument<VoteDocument> = this.db.doc<VoteDocument>(`votes/${eventId}_${groupId}_${userId}`);
+    return voteDoc.valueChanges().subscribe(d => {
+      console.log('Runs on subscribe');
+      if (!d)  {
+        console.log('Document does not exist, create empty vote');
+        const voteD: VoteDocument = {
+          eventId: eventId,
+          groupId: groupId,
+          userId: userId,
+          votes: criteria.map(crit  => {
+            console.log('this is the crit' + crit.criteria)
+            const v: Vote = {name: crit.name, criteriaId: crit.id, value: 0};
+            return v;
+          })
+        };
+        console.log('setting document');
+        voteDoc.set(voteD);
+        return voteD;
+      } else {
+        console.log('Document exists, just return current vote data');
+        return d;
+      }
+
+    });
+  }
+
+  // Create vote
+  voteForGroup(eventId: string, groupId: string, newVotes: Criteria[], userId: string) {
+    const eventRef = this.db.firestore.collection('events').doc(eventId);
+    const voteRef = this.db.firestore.collection('votes').doc(`${eventId}_${groupId}_${userId}`);
+
+    const transaction = this.db.firestore.runTransaction(t => {
+      return t.get(eventRef)
+      .then(eventDoc => {
+        if (eventDoc) {
+          const currentEvent = eventDoc.data();
+          const currentGroupIndex = currentEvent.groups.findIndex(group => group.id === groupId);
+
+          t.get(voteRef).then(votes => {
+            if (votes) {
+              console.log(votes.data());
+            } else {
+              console.log('no votes found: ' + votes);
+            }
+          });
+
+          currentEvent.groups[currentGroupIndex].criteria.forEach((crit) => {
+            console.log(crit.value);
+            newVotes.forEach((v) => {
+              if (crit.id === v.id) {
+                crit.value = crit.value + v.value;
+                crit.votes++;
+              }
+            });
+          });
+
+          console.log(currentEvent);
+          t.set(eventRef, currentEvent, {merge: true});
+          return currentEvent;
+        } else {
+          console.log('No event document exists');
+        }
+      })
+      .then(result => {
+        console.log('transaction successful');
+      })
+      .catch(err => {
+        console.log('some error: ' + err);
+      });
+    });
+  }
+
 
 }

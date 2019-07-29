@@ -4,13 +4,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DataService } from '../core/data.service';
 import { Router } from '@angular/router';
+import { Group } from '../core/data-types';
 
-interface Group {
-  id: string;
-  description: string;
-  members: string[];
-  name: string;
-}
 
 @Component({
   selector: 'app-group-list',

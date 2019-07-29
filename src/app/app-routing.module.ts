@@ -24,7 +24,7 @@ const routes: Routes = [
   {path: 'user', component: UserPageComponent, canActivate: [AuthGuard]},
   {path: 'events', component: EventsComponent},
   {path: 'events/:id', component: EventDetailComponent},
-  {path: 'events/create-event', component: CreateEventComponent},
+  {path: 'create-event', component: CreateEventComponent},
   {path: 'events/:id/edit', component: CreateEventComponent},
   {path: 'events/:id/vote/:groupId', component: VotingPageComponent}
 ];

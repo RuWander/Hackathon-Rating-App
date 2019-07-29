@@ -57,7 +57,7 @@
             <mat-list dense>
               <mat-list-item *ngFor="let crit of event?.criteria">
                 <mat-icon mat-list-icon>star_border</mat-icon>
-                <h4 mat-line>{{crit.criteria}} ( {{ crit.critStart }} / {{ crit.critEnd }} )</h4>
+                <h4 mat-line>{{crit.name}} ( {{ crit.critStart }} / {{ crit.critEnd }} )</h4>
                 <button mat-icon-button color='warn' (click)="removeCritFromEvent(crit.id)">
                   <mat-icon mat-list-icon>highlight_off</mat-icon>
                 </button>
@@ -68,7 +68,7 @@
 
             <div fxLayout='row' fxLayout.xs='column' fxLayoutGap="10px">
               <mat-form-field fxFlex='70'>
-                <input matInput formControlName="criteria" placeholder="Criteria Name">
+                <input matInput formControlName="name" placeholder="Criteria Name">
               </mat-form-field>
               <div fxFlex='30' fxLayout='row' fxLayout.xs='row' fxLayoutAlign='space-between'>
                 <mat-form-field fxFlex='45'>

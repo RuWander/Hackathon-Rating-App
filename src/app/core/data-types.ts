@@ -8,9 +8,9 @@ export interface Event {
 }
 
 export interface Group {
-  id: string;
-  description: string;
-  members: string[];
+  id?: string;
+  description?: string;
+  members?: string[];
   name: string;
   criteria?: Criteria[];
 }
@@ -34,4 +34,21 @@ export interface Criteria {
   name: string;
   start: number;
   end: number;
+  value: number;
+  votes: number;
+  criteria?: string;
+}
+
+export interface VoteDocument {
+  id?: string;
+  eventId: string;
+  groupId: string;
+  userId: string;
+  votes: Vote[];
+}
+
+export interface Vote {
+  name?: string;
+  criteriaId: string;
+  value: number;
 }
