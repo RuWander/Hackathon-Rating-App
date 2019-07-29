@@ -23,7 +23,7 @@ export class VotingPageComponent implements OnInit {
 
   
   // private eventVoteGroup: Group;
-  // private groupCriteria: Criteria[];
+  private groupCriteria$: Observable<VoteDocument>;
   // private currentVote$: Observable<VoteDocument>;
 
   constructor(
@@ -55,32 +55,9 @@ export class VotingPageComponent implements OnInit {
       }
 
       console.log(grp);
-      this.dataService.createVoteForGroup(this.eventId, this.groupId, values[2].uid, [...grp.criteria]);
+      this.groupCriteria$ = this.dataService.createVoteForGroup(this.eventId, this.groupId, values[2].uid, [...grp.criteria]);
     });
-    // this.id = this.route.snapshot.paramMap.get('id');
-    // this.groupId = this.route.snapshot.paramMap.get('groupId');
-    // this.event$ = this.dataService.getEvent(this.id).pipe(
 
-    // );
-    // this.group$ = this.dataService.getGroup(this.groupId).pipe(
-    //   map(data => {
-    //     return data;
-    //   })
-    // );
-    // this.event$.subscribe(g => {
-    //   this.eventId = g.id;
-    //   g.groups.forEach((item, i) => {
-    //     if (item.id === this.groupId) {
-    //       this.eventVoteGroup = item;
-    //       this.groupCriteria = [...item.criteria];
-    //       console.log(this.eventId);
-    //       // this.currentVote$ = this.dataService.createVoteForGroup(g.id, this.groupId, this.userId, [...item.criteria]);
-    //     }
-    //   });
-    // });
-    // this.auth.user$.subscribe(user => {
-    //   this.userId = user.uid;
-    // });
   }
 
   goBack() {

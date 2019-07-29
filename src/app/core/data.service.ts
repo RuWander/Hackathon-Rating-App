@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, DocumentReference, Action, DocumentSnapshotExists, DocumentSnapshotDoesNotExist } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { map, shareReplay, take, tap } from 'rxjs/operators';
 import { Event, Group, Criteria, VoteDocument, Vote } from './data-types';
 import { firestore } from 'firebase';
 
@@ -225,32 +225,61 @@ export class DataService {
     });
   }
 
-  createVoteForGroup(eventId: string, groupId: string, userId: string, criteria: Criteria[]) {
+  createVoteForGroup(eventId: string, groupId: string, userId: string, criteria: Criteria[]): Observable<VoteDocument> {
     // console.log('the criteria that is not defined: ', criteria);
+    let voteCrit: VoteDocument;
     const voteDoc: AngularFirestoreDocument<VoteDocument> = this.db.doc<VoteDocument>(`votes/${eventId}_${groupId}_${userId}`);
-    return voteDoc.valueChanges().subscribe(d => {
-      console.log('Runs on subscribe');
-      if (!d)  {
-        console.log('Document does not exist, create empty vote');
-        const voteD: VoteDocument = {
-          eventId: eventId,
-          groupId: groupId,
-          userId: userId,
-          votes: criteria.map(crit  => {
-            console.log('this is the crit' + crit.criteria)
-            const v: Vote = {name: crit.name, criteriaId: crit.id, value: 0};
-            return v;
-          })
-        };
-        console.log('setting document');
-        voteDoc.set(voteD);
-        return voteD;
-      } else {
-        console.log('Document exists, just return current vote data');
-        return d;
-      }
+    return voteDoc.valueChanges().pipe(
+      map(d => {
+        console.log('Runs on subscribe');
+        if (!d)  {
+          console.log('Document does not exist, create empty vote');
+          const voteD: VoteDocument = {
+            eventId: eventId,
+            groupId: groupId,
+            userId: userId,
+            votes: criteria.map(crit  => {
+              console.log('this is the crit' + crit.criteria);
+              const v: Vote = {name: crit.name, criteriaId: crit.id, value: 0};
+              return v;
+            })
+          };
+          console.log('setting document');
+          voteDoc.set(voteD);
+          voteCrit = voteD;
+          return voteCrit;
+        } else {
+          console.log('Document exists, just return current vote data' + JSON.stringify(d));
+          return d;
+        }
+      }),
+      shareReplay(1)
+    );
+    // .subscribe(d => {
+    //   console.log('Runs on subscribe');
+    //   if (!d)  {
+    //     console.log('Document does not exist, create empty vote');
+    //     const voteD: VoteDocument = {
+    //       eventId: eventId,
+    //       groupId: groupId,
+    //       userId: userId,
+    //       votes: criteria.map(crit  => {
+    //         console.log('this is the crit' + crit.criteria)
+    //         const v: Vote = {name: crit.name, criteriaId: crit.id, value: 0};
+    //         return v;
+    //       })
+    //     };
+    //     console.log('setting document');
+    //     voteDoc.set(voteD);
+    //     voteCrit = voteD;
+    //     return voteCrit;
+    //   } else {
+    //     console.log('Document exists, just return current vote data' + JSON.stringify(d));
+    //     voteCrit = d;
+    //     return voteCrit;
+    //   }
+    // });
 
-    });
   }
 
   // Create vote
