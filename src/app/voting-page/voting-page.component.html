@@ -2,7 +2,7 @@
   <div fxLayout='row'>
     <div fxFlex="70" class='wrapper-content'>
       <div fxLayout='row' fxLayoutAlign="space-between center">
-        <h1>Vote for {{ groupCriteria | json }}</h1>
+        <h1>Vote for {{ (group$ | async)?.name }}</h1>
         <div fxLayoutGap='10px'>
           <button mat-raised-button color='accent' (click)='goBack()'>Back</button>
           <button mat-raised-button color='primary' (click)='submitVote()'>vote</button>

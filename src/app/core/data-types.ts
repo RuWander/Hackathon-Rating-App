@@ -44,6 +44,7 @@ export interface VoteDocument {
   eventId: string;
   groupId: string;
   userId: string;
+  counted: boolean;
   votes: Vote[];
 }
 

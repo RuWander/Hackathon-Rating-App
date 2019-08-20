@@ -19,11 +19,12 @@ export class VotingPageComponent implements OnInit {
   private event$: Observable<Event>;
   private group$: Observable<Group>;
   private user$: Observable<User> = this.auth.user$;
+  private user: User;
   private currentVote: VoteDocument;
 
-  
   // private eventVoteGroup: Group;
   private groupCriteria$: Observable<VoteDocument>;
+  private groupCriteria: VoteDocument;
   // private currentVote$: Observable<VoteDocument>;
 
   constructor(
@@ -43,7 +44,7 @@ export class VotingPageComponent implements OnInit {
       this.user$
       )
       .subscribe(values => {
-      console.log(values);
+      // console.log(values);
       let grp: Group = {
         name: ''
       };
@@ -54,8 +55,10 @@ export class VotingPageComponent implements OnInit {
         }
       }
 
-      console.log(grp);
+      // console.log(grp);
       this.groupCriteria$ = this.dataService.createVoteForGroup(this.eventId, this.groupId, values[2].uid, [...grp.criteria]);
+      this.groupCriteria$.subscribe(g => this.groupCriteria = g);
+      this.user$.subscribe(u => this.user = u);
     });
 
   }
@@ -66,7 +69,7 @@ export class VotingPageComponent implements OnInit {
   }
 
   submitVote() {
-    // this.dataService.voteForGroup(this.id, this.groupId, this.groupCriteria, this.userId);
+    this.dataService.voteForGroup(this.eventId, this.groupId, this.groupCriteria, this.user.uid);
   }
 
 }

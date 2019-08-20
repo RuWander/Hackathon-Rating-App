@@ -36,15 +36,15 @@ export class AuthService {
       })
     );
     // Get the auth state, then fetch the Firestore user document or return null
-    console.log('Checking if user is logged in');
+    // console.log('Checking if user is logged in');
     this.user$.subscribe(user => {
       if (user) {
         // this.user = user;
-        console.log('User is loggedin');
-        console.log(user);
+        // console.log('User is loggedin');
+        // console.log(user);
         // localStorage.setItem('user', JSON.stringify(user));
       } else {
-        console.log('User is not loggedin');
+        // console.log('User is not loggedin');
         localStorage.setItem('user', null);
       }
     });
