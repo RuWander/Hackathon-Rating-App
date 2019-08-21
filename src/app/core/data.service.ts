@@ -235,9 +235,9 @@ export class DataService {
         if (!d)  {
           console.log('Document does not exist, create empty vote');
           const voteD: VoteDocument = {
-            eventId: eventId,
-            groupId: groupId,
-            userId: userId,
+            eventId,
+            groupId,
+            userId,
             counted: false,
             votes: criteria.map(crit  => {
               console.log('this is the crit' + crit.criteria);
