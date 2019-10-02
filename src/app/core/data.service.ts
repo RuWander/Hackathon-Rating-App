@@ -289,10 +289,6 @@ export class DataService {
           });
           return c;
         });
-        // console.log(currentVote.id);
-        // console.log(currentVote);
-        // console.log(newVotes);
-        // console.log(voteDifference);
 
         // Set New Vote State
         t.set(eventRef, currentEvent);

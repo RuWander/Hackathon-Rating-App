@@ -1,11 +1,15 @@
 <div class="eventdata">
-  <div *ngFor='let event of eventsData'>
-    <h1>{{ event.title }} </h1>
+  <div *ngFor="let event of eventsData">
+    <h1>{{ event.title }}</h1>
     <p>{{ event.description }}</p>
-    <div *ngFor='let group of event.groups'>
+    <div *ngFor="let group of event.groups">
       <h4>{{ group.name }}</h4>
-      <div *ngFor='let criteria of group.criteria'>
-        <h1>{{ criteria.value/criteria.vote }}</h1>
+      <div *ngFor="let criteria of group.criteria">
+        <h1>
+          {{
+            criteria.value / criteria.vote ? criteria.value / criteria.vote : 0
+          }}
+        </h1>
         <h4>{{ criteria.name }}</h4>
       </div>
     </div>
