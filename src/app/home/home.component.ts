@@ -8,14 +8,14 @@ import { Event } from '../core/data-types';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  private eventsData: Event[] = [];
+  // private eventsData: Event[] = [];
 
   constructor(private dataService: DataService) {}
 
   ngOnInit() {
-    this.dataService.getEvents().subscribe(events => {
-      console.log(events);
-      this.eventsData = events;
-    });
+    // this.dataService.getEvents().subscribe(events => {
+    //   console.log(events);
+    //   this.eventsData = events;
+    // });
   }
 }

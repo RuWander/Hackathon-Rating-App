@@ -28,6 +28,8 @@ import { GroupListComponent } from './group-list/group-list.component';
 import { GroupDetailComponent } from './group-detail/group-detail.component';
 import { CreateEventComponent } from './create-event/create-event.component';
 import { EventDetailComponent } from './event-detail/event-detail.component';
+import { EventsResultsDisplayComponent } from './events-results-display/events-results-display.component';
+import { ResultsBlocksComponent } from './results-blocks/results-blocks.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import { EventDetailComponent } from './event-detail/event-detail.component';
     GroupListComponent,
     GroupDetailComponent,
     CreateEventComponent,
-    EventDetailComponent
+    EventDetailComponent,
+    EventsResultsDisplayComponent,
+    ResultsBlocksComponent
   ],
   imports: [
     BrowserModule,

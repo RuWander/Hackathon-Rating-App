@@ -1,0 +1,40 @@
+<div *ngFor="let event of eventsData">
+  <mat-card class="results-card">
+    <mat-card-header>
+      <!-- <div mat-card-avatar class="example-header-image"></div> -->
+      <mat-card-title>{{ event.title }}</mat-card-title>
+      <mat-card-subtitle>{{ event.description }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content class="results-content">
+      <mat-divider></mat-divider>
+      <div *ngFor="let group of event.groups">
+        <h4>{{ group.name }}</h4>
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+          <div *ngFor="let criteria of group.criteria">
+            <div fxLayout="column" fxLayoutAlign="center center">
+              <div fxLayoutAlign="center center" class="spinnerOuter">
+                <mat-progress-spinner
+                  class="spinnerPos"
+                  color="primary"
+                  mode="determinate"
+                  [value]="criteria.value"
+                >
+                </mat-progress-spinner>
+                <div class="spinnerInner">{{ criteria.value }} %</div>
+              </div>
+              <h4>{{ criteria.name }}</h4>
+            </div>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+    </mat-card-content>
+    <!-- <mat-card-actions>
+          <button mat-button>LIKE</button>
+          <button mat-button>SHARE</button>
+        </mat-card-actions> -->
+  </mat-card>
+
+  <!-- <h2>{{ event.title }}</h2>
+  <p>{{ event.description }}</p> -->
+</div>
