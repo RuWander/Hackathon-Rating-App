@@ -11,7 +11,7 @@
       <div *ngFor="let group of event.groups">
         <h3>{{ group.name }}</h3>
         <!-- Render the criteria circles -->
-        <div fxLayout="row" fxLayoutAlign="space-around center">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
           <ng-container *ngFor="let total of groupTotals">
             <div
               *ngIf="total.id === group.id"
@@ -24,7 +24,7 @@
                     class="spinnerPos"
                     color="accent"
                     mode="determinate"
-                    [value]="26"
+                    [value]="total.totalValue"
                   >
                   </mat-progress-spinner>
                   <div class="spinnerInner">{{ total.totalValue }} %</div>
