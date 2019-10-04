@@ -1,12 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { DataService } from '../core/data.service';
 import { DocumentReference, DocumentSnapshot } from '@angular/fire/firestore';
 import { Event, Group } from '../core/data-types';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Timestamp } from 'rxjs/internal/operators/timestamp';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA
+} from '@angular/material/dialog';
+import { DeleteEventDialogComponent } from '../delete-event-dialog/delete-event-dialog.component';
 
 @Component({
   selector: 'app-create-event',
@@ -14,24 +18,23 @@ import { Timestamp } from 'rxjs/internal/operators/timestamp';
   styleUrls: ['./create-event.component.css']
 })
 export class CreateEventComponent implements OnInit {
-
   id = '';
   editing = false;
   private currentEvent$: Observable<Event>;
   event: Event;
   groupLoading = false;
 
-
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private dataService: DataService
-  ) { }
+    private dataService: DataService,
+    public dialog: MatDialog
+  ) {}
 
   eventForm = new FormGroup({
     title: new FormControl(''),
     date: new FormControl(''),
-    description: new FormControl(''),
+    description: new FormControl('')
   });
 
   criteriaForm = new FormGroup({
@@ -46,7 +49,7 @@ export class CreateEventComponent implements OnInit {
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
-    console.log(`This is the ID: ${this.id}`)
+    console.log(`This is the ID: ${this.id}`);
     if (this.id) {
       this.editing = true;
       // console.log(`this is the ID: ${this.id}`)
@@ -63,7 +66,6 @@ export class CreateEventComponent implements OnInit {
           date: d,
           description: e.description
         });
-
       });
       console.log(this.event);
     }
@@ -79,7 +81,7 @@ export class CreateEventComponent implements OnInit {
     console.log(this.eventForm.value);
     this.dataService.createEvent(this.eventForm.value).then(docRef => {
       console.log('This is the id if the new Event created');
-      console.log((docRef) ? ( docRef as DocumentReference).id : 'void'); // docRef of type void | DocumentReference
+      console.log(docRef ? (docRef as DocumentReference).id : 'void'); // docRef of type void | DocumentReference
       this.router.navigate(['events/' + docRef.id + '/edit']);
     });
   }
@@ -114,4 +116,25 @@ export class CreateEventComponent implements OnInit {
     this.router.navigate(['events', this.id]);
   }
 
+  deleteEventDialog() {
+    console.log('This will delete event');
+    const dialogRef = this.dialog.open(DeleteEventDialogComponent, {
+      // width: '35%',
+      data: { id: this.id, eventTitle: this.event.title }
+    });
+
+    dialogRef.afterClosed().subscribe(deleteResult => {
+      console.log('The dialog was closed');
+      console.log(deleteResult);
+      if (deleteResult) {
+        console.log(
+          'this event will be deleted navigate to deleted events page'
+        );
+        this.dataService.removeEvent(this.id);
+        this.router.navigate(['create-event']);
+      } else {
+        console.log('the deletion was denied, stay on page');
+      }
+    });
+  }
 }

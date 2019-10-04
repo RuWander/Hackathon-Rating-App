@@ -1,86 +1,158 @@
-<div fxLayoutAlign="center stretch" fxLayout='column' class='wrapper'>
-  <div fxLayout='row'>
-    <div fxFlex="70" class='wrapper-content'>
-      <div fxLayout='row' fxLayoutAlign="space-between center">
-        <h1 *ngIf='editing; else createHeader'>Update Event</h1>
+<div fxLayoutAlign="center stretch" fxLayout="column" class="wrapper">
+  <div fxLayout="row">
+    <div fxFlex="70" class="wrapper-content">
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <h1 *ngIf="editing; else createHeader">Update Event</h1>
         <ng-template #createHeader>
           <h1>Create Event</h1>
         </ng-template>
-        <div fxLayoutGap='10px'>
-          <button mat-raised-button color='primary' (click)='doneEditing()'>Done</button>
+        <div fxLayoutGap="10px">
+          <button mat-raised-button color="primary" (click)="doneEditing()">
+            Done
+          </button>
+          <button mat-raised-button color="warn" (click)="deleteEventDialog()">
+            Delete
+          </button>
         </div>
       </div>
     </div>
   </div>
-  <div fxLayout='row'>
-    <div fxFlex="70" fxLayout='row' fxLayout.xs='column' fxLayout.sm='column' fxLayoutAlign="center start"
-      fxLayoutAlign.xs="center stretch" fxLayoutAlign.sm="center stretch" fxLayoutGap="20px" class='wrapper-content'>
-      <mat-card fxFlex="60" fxFlex.xs='100' fxFlex.sm='100' class="main-content">
+  <div fxLayout="row">
+    <div
+      fxFlex="70"
+      fxLayout="row"
+      fxLayout.xs="column"
+      fxLayout.sm="column"
+      fxLayoutAlign="center start"
+      fxLayoutAlign.xs="center stretch"
+      fxLayoutAlign.sm="center stretch"
+      fxLayoutGap="20px"
+      class="wrapper-content"
+    >
+      <mat-card
+        fxFlex="60"
+        fxFlex.xs="100"
+        fxFlex.sm="100"
+        class="main-content"
+      >
         <mat-card-content>
-
-          <form [formGroup]="eventForm" fxLayout='column'>
+          <form [formGroup]="eventForm" fxLayout="column">
             <h3>EVENT TITLE</h3>
-            <div fxLayout='row'>
-              <mat-form-field color='primary' fxFlex.xs='100' fxFlex.sm='40' fxFlex='30'>
-                <input matInput formControlName="title" placeholder="Input">
+            <div fxLayout="row">
+              <mat-form-field
+                color="primary"
+                fxFlex.xs="100"
+                fxFlex.sm="40"
+                fxFlex="30"
+              >
+                <input matInput formControlName="title" placeholder="Input" />
               </mat-form-field>
             </div>
 
-
             <h3>DATE</h3>
-            <div fxLayout='row'>
-              <mat-form-field fxFlex='30' fxFlex.xs='100' fxFlex.sm='40'>
-                <input matInput formControlName="date" [matDatepicker]="picker" placeholder="Choose a date">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <div fxLayout="row">
+              <mat-form-field fxFlex="30" fxFlex.xs="100" fxFlex.sm="40">
+                <input
+                  matInput
+                  formControlName="date"
+                  [matDatepicker]="picker"
+                  placeholder="Choose a date"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
             </div>
 
             <h3>DESCRIPTION</h3>
             <mat-form-field>
-              <textarea matInput formControlName="description"
-                placeholder="Write an awesome description for this event here!"></textarea>
+              <textarea
+                matInput
+                formControlName="description"
+                placeholder="Write an awesome description for this event here!"
+              ></textarea>
             </mat-form-field>
-            <div fxLayout='row' fxLayoutAlign='end'>
-              <button *ngIf='editing' class="submitBtn" color="primary" mat-raised-button
-                (click)="updateEvent()">update</button>
-              <button *ngIf='!editing' class="submitBtn" color="primary" mat-raised-button
-                (click)="createEvent()">SAVE</button>
+            <div fxLayout="row" fxLayoutAlign="end">
+              <button
+                *ngIf="editing"
+                class="submitBtn"
+                color="primary"
+                mat-raised-button
+                (click)="updateEvent()"
+              >
+                update
+              </button>
+              <button
+                *ngIf="!editing"
+                class="submitBtn"
+                color="primary"
+                mat-raised-button
+                (click)="createEvent()"
+              >
+                SAVE
+              </button>
             </div>
           </form>
-          <br>
+          <br />
           <mat-divider></mat-divider>
 
-          <form [formGroup]="criteriaForm" fxLayout='column'>
+          <form [formGroup]="criteriaForm" fxLayout="column">
             <h3>ADD CRITERIA</h3>
             <p>Add the criteria that the teams will be marked on!</p>
             <mat-list dense>
               <mat-list-item *ngFor="let crit of event?.criteria">
                 <mat-icon mat-list-icon>star_border</mat-icon>
-                <h4 mat-line>{{crit.name}} ( {{ crit.critStart }} / {{ crit.critEnd }} )</h4>
-                <button mat-icon-button color='warn' (click)="removeCritFromEvent(crit.id)">
+                <h4 mat-line>
+                  {{ crit.name }} ( {{ crit.critStart }} / {{ crit.critEnd }} )
+                </h4>
+                <button
+                  mat-icon-button
+                  color="warn"
+                  (click)="removeCritFromEvent(crit.id)"
+                >
                   <mat-icon mat-list-icon>highlight_off</mat-icon>
                 </button>
                 <mat-divider></mat-divider>
               </mat-list-item>
             </mat-list>
-            <br>
+            <br />
 
-            <div fxLayout='row' fxLayout.xs='column' fxLayoutGap="10px">
-              <mat-form-field fxFlex='70'>
-                <input matInput formControlName="name" placeholder="Criteria Name">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+              <mat-form-field fxFlex="70">
+                <input
+                  matInput
+                  formControlName="name"
+                  placeholder="Criteria Name"
+                />
               </mat-form-field>
-              <div fxFlex='30' fxLayout='row' fxLayout.xs='row' fxLayoutAlign='space-between'>
-                <mat-form-field fxFlex='45'>
-                  <input matInput type="number" formControlName="critStart" placeholder="start">
+              <div
+                fxFlex="30"
+                fxLayout="row"
+                fxLayout.xs="row"
+                fxLayoutAlign="space-between"
+              >
+                <mat-form-field fxFlex="45">
+                  <input
+                    matInput
+                    type="number"
+                    formControlName="critStart"
+                    placeholder="start"
+                  />
                 </mat-form-field>
 
-                <div fxFlex='10'>
+                <div fxFlex="10">
                   <h2>/</h2>
                 </div>
 
-                <mat-form-field fxFlex='45'>
-                  <input matInput type='number' formControlName="critEnd" placeholder="end">
+                <mat-form-field fxFlex="45">
+                  <input
+                    matInput
+                    type="number"
+                    formControlName="critEnd"
+                    placeholder="end"
+                  />
                 </mat-form-field>
               </div>
             </div>
@@ -91,34 +163,47 @@
           </form>
         </mat-card-content>
       </mat-card>
-      <mat-card fxFlex="40" fxFlex.xs='100' fxFlex.sm='100' class='side-content'>
+      <mat-card
+        fxFlex="40"
+        fxFlex.xs="100"
+        fxFlex.sm="100"
+        class="side-content"
+      >
         <mat-card-content>
-          <form [formGroup]="groupForm" fxLayout='column'>
-            <mat-progress-bar *ngIf='groupLoading' mode="indeterminate"></mat-progress-bar>
+          <form [formGroup]="groupForm" fxLayout="column">
+            <mat-progress-bar
+              *ngIf="groupLoading"
+              mode="indeterminate"
+            ></mat-progress-bar>
             <h3>ADD GROUP</h3>
             <p>Add the event groups here!</p>
 
-            <div fxLayout='column' fxLayoutGap="20px">
-              <mat-card *ngFor='let group of event?.groups; let i = index'>
+            <div fxLayout="column" fxLayoutGap="20px">
+              <mat-card *ngFor="let group of event?.groups; let i = index">
                 <mat-card-content>
-                  <h3>{{group.name}}</h3>
+                  <h3>{{ group.name }}</h3>
                   <span fxFlex></span>
-                  <button mat-icon-button color='warn' (click)="removeGroup(group.id)">
+                  <button
+                    mat-icon-button
+                    color="warn"
+                    (click)="removeGroup(group.id)"
+                  >
                     <mat-icon>delete</mat-icon>
                   </button>
                 </mat-card-content>
               </mat-card>
             </div>
-            <br>
-            <div fxLayout='row'>
-              <mat-form-field fxFlex='60'>
-                <input matInput formControlName="name" placeholder="Group name">
+            <br />
+            <div fxLayout="row">
+              <mat-form-field fxFlex="60">
+                <input
+                  matInput
+                  formControlName="name"
+                  placeholder="Group name"
+                />
               </mat-form-field>
-
-
-
             </div>
-            <button class="submitBtn" (click)='addGroup()' mat-raised-button>
+            <button class="submitBtn" (click)="addGroup()" mat-raised-button>
               <mat-icon>add</mat-icon>
             </button>
           </form>
@@ -126,6 +211,4 @@
       </mat-card>
     </div>
   </div>
-
-
 </div>

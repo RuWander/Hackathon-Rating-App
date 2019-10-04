@@ -9,9 +9,8 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 
-
-
 import { MaterialModule } from './material';
+import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule } from '@angular/material';
 import { HomeComponent } from './home/home.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { RegisterPageComponent } from './register-page/register-page.component';
@@ -30,6 +29,7 @@ import { CreateEventComponent } from './create-event/create-event.component';
 import { EventDetailComponent } from './event-detail/event-detail.component';
 import { EventsResultsDisplayComponent } from './events-results-display/events-results-display.component';
 import { ResultsBlocksComponent } from './results-blocks/results-blocks.component';
+import { DeleteEventDialogComponent } from './delete-event-dialog/delete-event-dialog.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +46,8 @@ import { ResultsBlocksComponent } from './results-blocks/results-blocks.componen
     CreateEventComponent,
     EventDetailComponent,
     EventsResultsDisplayComponent,
-    ResultsBlocksComponent
+    ResultsBlocksComponent,
+    DeleteEventDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -58,9 +59,14 @@ import { ResultsBlocksComponent } from './results-blocks/results-blocks.componen
     MaterialModule,
     ReactiveFormsModule,
     MatInputModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatDialogModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    DeleteEventDialogComponent,
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }
+  ],
+  bootstrap: [AppComponent],
+  entryComponents: [DeleteEventDialogComponent]
 })
-export class AppModule { }
+export class AppModule {}

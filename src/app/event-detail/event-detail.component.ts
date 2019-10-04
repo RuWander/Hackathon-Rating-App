@@ -11,7 +11,6 @@ import { Event } from '../core/data-types';
   styleUrls: ['./event-detail.component.css']
 })
 export class EventDetailComponent implements OnInit {
-
   private event$: Observable<Event>;
   private id: string;
 
@@ -19,7 +18,7 @@ export class EventDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dataService: DataService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
@@ -32,7 +31,7 @@ export class EventDetailComponent implements OnInit {
           }
           return data;
         } else {
-          console.log('There is no event document yet')
+          console.log('There is no event document yet');
         }
       })
     );
@@ -46,5 +45,4 @@ export class EventDetailComponent implements OnInit {
     console.log(groupId);
     this.router.navigate(['events', this.id, 'vote', groupId]);
   }
-
 }

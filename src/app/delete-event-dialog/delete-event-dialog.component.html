@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>{{ data.eventTitle }} will be deleted!</h1>
+<div mat-dialog-content>
+  <p>Do you confirm that this event can be deleted?</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false">No Thanks</button>
+  <button mat-raised-button color="warn" [mat-dialog-close]="true">
+    I Confirm
+  </button>
+</div>

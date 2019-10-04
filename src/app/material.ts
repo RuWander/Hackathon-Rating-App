@@ -7,13 +7,18 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatDatepickerModule, MatInputModule , MatNativeDateModule} from '@angular/material';
+import {
+  MatDatepickerModule,
+  MatInputModule,
+  MatNativeDateModule,
+  MatDialogModule
+} from '@angular/material';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSliderModule} from '@angular/material/slider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSliderModule } from '@angular/material/slider';
 
 @NgModule({
-  imports:[
+  imports: [
     MatIconModule,
     MatToolbarModule,
     MatListModule,
@@ -26,9 +31,10 @@ import {MatSliderModule} from '@angular/material/slider';
     MatNativeDateModule,
     MatProgressBarModule,
     MatSliderModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDialogModule
   ],
-  exports:[
+  exports: [
     MatIconModule,
     MatToolbarModule,
     MatListModule,
@@ -41,7 +47,8 @@ import {MatSliderModule} from '@angular/material/slider';
     MatNativeDateModule,
     MatProgressBarModule,
     MatSliderModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatInputModule
   ]
 })
-export class MaterialModule { }
+export class MaterialModule {}
