@@ -20,11 +20,11 @@ export class DeleteEventDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  deletedEventButton(): void {
-    console.log('delete turn runs');
-    this.data.deleted = true;
-    this.dialogRef.close();
-  }
+  // deletedEventButton(): void {
+  //   console.log('delete turn runs');
+  //   this.data.deleted = true;
+  //   this.dialogRef.close();
+  // }
 
   ngOnInit() {}
 }

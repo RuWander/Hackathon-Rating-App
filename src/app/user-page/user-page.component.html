@@ -1,1 +1,183 @@
-<p>user-page works!</p>
+<div fxLayoutAlign="center stretch" fxLayout="column" class="wrapper">
+  <div fxLayout="row">
+    <div fxFlex="70" class="wrapper-content">
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <h1 *ngIf="editing; else createHeader">Update Event</h1>
+        <ng-template #createHeader>
+          <h1>Your Profile</h1>
+        </ng-template>
+        <div fxLayoutGap="10px">
+          <button mat-raised-button color="primary" (click)="doneEditing()">
+            Done
+          </button>
+          <button mat-raised-button color="warn" (click)="deleteEventDialog()">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div fxLayout="row">
+    <div
+      fxFlex="70"
+      fxLayout="row"
+      fxLayout.xs="column"
+      fxLayout.sm="column"
+      fxLayoutAlign="center start"
+      fxLayoutAlign.xs="center stretch"
+      fxLayoutAlign.sm="center stretch"
+      fxLayoutGap="20px"
+      class="wrapper-content"
+    >
+      <mat-card
+        fxFlex="60"
+        fxFlex.xs="100"
+        fxFlex.sm="100"
+        class="main-content"
+      >
+        <mat-card-content>
+          <form [formGroup]="userForm" fxLayout="column">
+            <h3>EMAIL</h3>
+            <div fxLayout="row">
+              <mat-form-field
+                color="primary"
+                fxFlex.xs="100"
+                fxFlex.sm="40"
+                fxFlex="30"
+              >
+                <input
+                  matInput
+                  formControlName="email"
+                  placeholder="Your Email"
+                />
+              </mat-form-field>
+            </div>
+            <h3>USERNAME</h3>
+            <div fxLayout="row">
+              <mat-form-field
+                color="primary"
+                fxFlex.xs="100"
+                fxFlex.sm="40"
+                fxFlex="30"
+              >
+                <input
+                  matInput
+                  formControlName="username"
+                  placeholder="Your Username"
+                />
+              </mat-form-field>
+            </div>
+
+            <h3>FIRSTNAME</h3>
+            <div fxLayout="row">
+              <mat-form-field
+                color="primary"
+                fxFlex.xs="100"
+                fxFlex.sm="40"
+                fxFlex="30"
+              >
+                <input
+                  matInput
+                  formControlName="firstname"
+                  placeholder="Your First Name"
+                />
+              </mat-form-field>
+            </div>
+
+            <h3>LASTNAME</h3>
+            <div fxLayout="row">
+              <mat-form-field
+                color="primary"
+                fxFlex.xs="100"
+                fxFlex.sm="40"
+                fxFlex="30"
+              >
+                <input
+                  matInput
+                  formControlName="lastname"
+                  placeholder="Your Last Name"
+                />
+              </mat-form-field>
+            </div>
+
+            <h3>BIO</h3>
+            <mat-form-field>
+              <textarea
+                matInput
+                formControlName="bio"
+                placeholder="Write an awesome BIO!"
+              ></textarea>
+            </mat-form-field>
+
+            <div fxLayout="row" fxLayoutAlign="end">
+              <button
+                *ngIf="editing"
+                class="submitBtn"
+                color="primary"
+                mat-raised-button
+                (click)="updateEvent()"
+              >
+                update
+              </button>
+              <button
+                *ngIf="!editing"
+                class="submitBtn"
+                color="primary"
+                mat-raised-button
+                (click)="updateUserProfile()"
+              >
+                Update
+              </button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+      <mat-card
+        fxFlex="40"
+        fxFlex.xs="100"
+        fxFlex.sm="100"
+        class="side-content"
+      >
+        <mat-card-content>
+          <form [formGroup]="groupForm" fxLayout="column">
+            <!-- <mat-progress-bar
+                *ngIf="groupLoading"
+                mode="indeterminate"
+              ></mat-progress-bar> -->
+            <h3>GROUPS YOU BELONG TO:</h3>
+            <p>Join an Event</p>
+
+            <!-- <div fxLayout="column" fxLayoutGap="20px">
+                <mat-card *ngFor="let group of event?.groups; let i = index">
+                  <mat-card-content>
+                    <h3>{{ group.name }}</h3>
+                    <span fxFlex></span>
+                    <button
+                      mat-icon-button
+                      color="warn"
+                      (click)="removeGroup(group.id)"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </mat-card-content>
+                </mat-card>
+              </div> -->
+            <br />
+            <!-- <div fxLayout="row">
+                <mat-form-field fxFlex="60">
+                  <input
+                    matInput
+                    formControlName="name"
+                    placeholder="Group name"
+                  />
+                </mat-form-field>
+              </div> -->
+            <button class="submitBtn" (click)="addGroup()" mat-raised-button>
+              <mat-icon>add</mat-icon>
+            </button>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

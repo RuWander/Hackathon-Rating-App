@@ -1,3 +1,5 @@
+import { DocumentReference } from '@angular/fire/firestore';
+
 export interface Event {
   id?: string;
   title: string;
@@ -18,9 +20,12 @@ export interface Group {
 export interface User {
   uid: string;
   email: string;
-  firstName?: string;
-  lastName?: string;
+  username?: string;
+  firstname?: string;
+  lastname?: string;
+  bio?: string;
   roles?: string[];
+  groups?: DocumentReference[];
 }
 // TODO: use this interface in the auth service instead of the locally declared one
 export interface AuthUser {

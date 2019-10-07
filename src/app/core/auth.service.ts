@@ -3,7 +3,10 @@ import { Router } from '@angular/router';
 
 import { auth } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreDocument
+} from '@angular/fire/firestore';
 
 import { Observable, of } from 'rxjs';
 import { switchMap, shareReplay } from 'rxjs/operators';
@@ -11,13 +14,10 @@ import { stringify } from 'querystring';
 import { User } from './data-types';
 import { ThrowStmt } from '@angular/compiler';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
   user$: Observable<User>;
 
   constructor(
@@ -52,7 +52,10 @@ export class AuthService {
 
   async emailPasswordSignin(email: string, password: string) {
     // const provider = new auth.GoogleAuthProvider();
-    const credential = await this.afAuth.auth.signInWithEmailAndPassword(email, password);
+    const credential = await this.afAuth.auth.signInWithEmailAndPassword(
+      email,
+      password
+    );
     return this.updateUserData(credential.user);
 
     // const result = await this.afAuth.auth.signInWithEmailAndPassword(email, password);
@@ -63,7 +66,6 @@ export class AuthService {
     const provider = new auth.GoogleAuthProvider();
     const credential = await this.afAuth.auth.signInWithPopup(provider);
     return this.updateUserData(credential.user);
-
   }
 
   // async register(email: string, password: string) {
@@ -82,17 +84,13 @@ export class AuthService {
     return this.router.navigate(['/']);
   }
 
-  private updateUserData(user) {
+  updateUserData(user) {
     // Sets user data to firestore on login
-    const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
+    const userRef: AngularFirestoreDocument<User> = this.afs.doc(
+      `users/${user.uid}`
+    );
 
-    const data = {
-      uid: user.uid,
-      email: user.email,
-    };
-
-    return userRef.set(data, {merge: true});
-
+    return userRef.set(user, { merge: true });
   }
 
   get isLoggedIn(): boolean {
