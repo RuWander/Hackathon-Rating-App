@@ -29,7 +29,6 @@ export class UserPageComponent implements OnInit {
   ngOnInit() {
     this.auth.user$.subscribe(user => {
       this.uid = user.uid;
-      console.log(user.firstname);
       // Update form with existing data
       this.userForm.patchValue({
         email: user.email,
@@ -58,6 +57,6 @@ export class UserPageComponent implements OnInit {
       uid: this.uid
     };
 
-    this.auth.updateUserData(user);
+    this.auth.updateUserData(user.uid, user);
   }
 }

@@ -10,9 +10,7 @@ import {
 
 import { Observable, of } from 'rxjs';
 import { switchMap, shareReplay } from 'rxjs/operators';
-import { stringify } from 'querystring';
 import { User } from './data-types';
-import { ThrowStmt } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -50,28 +48,39 @@ export class AuthService {
     });
   }
 
-  async emailPasswordSignin(email: string, password: string) {
+  async emailPasswordSignin(user) {
     // const provider = new auth.GoogleAuthProvider();
     const credential = await this.afAuth.auth.signInWithEmailAndPassword(
-      email,
-      password
+      user.email,
+      user.password
     );
-    return this.updateUserData(credential.user);
+    console.log(credential);
+    this.router.navigate(['dashboard']);
+    return this.updateUserData(credential.user.uid, user);
 
     // const result = await this.afAuth.auth.signInWithEmailAndPassword(email, password);
-    // this.router.navigate(['dashboard']);
+    //
   }
 
   async googleSignin() {
     const provider = new auth.GoogleAuthProvider();
     const credential = await this.afAuth.auth.signInWithPopup(provider);
-    return this.updateUserData(credential.user);
+    return this.updateUserData(credential.user.uid, credential.user);
   }
 
-  // async register(email: string, password: string) {
-  //   var result = await this.afAuth.auth.createUserWithEmailAndPassword(email, password)
-  //   this.sendEmailVerification();
-  // }
+  // Notify when email is already in use
+  async register(user) {
+    let credential = await this.afAuth.auth.createUserWithEmailAndPassword(
+      user.email,
+      user.password
+    );
+    delete user.password;
+    console.log(user);
+    console.log(credential.user.uid);
+    this.router.navigate(['dashboard']);
+    return this.updateUserData(credential.user.uid, user);
+    // this.sendEmailVerification();
+  }
 
   async logout() {
     await this.afAuth.auth.signOut();
@@ -84,10 +93,10 @@ export class AuthService {
     return this.router.navigate(['/']);
   }
 
-  updateUserData(user) {
+  updateUserData(uid, user) {
     // Sets user data to firestore on login
     const userRef: AngularFirestoreDocument<User> = this.afs.doc(
-      `users/${user.uid}`
+      `users/${uid}`
     );
 
     return userRef.set(user, { merge: true });

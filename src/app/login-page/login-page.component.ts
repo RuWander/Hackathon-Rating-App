@@ -2,26 +2,22 @@ import { Input, Component, Output } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { AuthService } from '../core/auth.service';
 
-
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.css']
 })
 export class LoginPageComponent {
-
   hide = true;
   error = '';
 
-  constructor(
-    private authService: AuthService
-  ) {
+  constructor(private authService: AuthService) {
     // TODO: redirect the user to the dashboard if loggedin and toast to let them know that they are loggedin
   }
 
   loginForm = new FormGroup({
     email: new FormControl(''),
-    password: new FormControl(''),
+    password: new FormControl('')
   });
 
   onSubmit() {
@@ -32,7 +28,6 @@ export class LoginPageComponent {
       this.error = 'Please enter a password';
     }
 
-    this.authService.emailPasswordSignin(values.email, values.password);
+    this.authService.emailPasswordSignin(values);
   }
-
 }
