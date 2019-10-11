@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
-  AngularFirestoreDocument
+  AngularFirestoreDocument,
+  DocumentSnapshot,
+  DocumentSnapshotExists
 } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { map, shareReplay, take, tap } from 'rxjs/operators';
 import { Event, Group, Criteria, VoteDocument, Vote } from './data-types';
 import { firestore } from 'firebase';
+import * as _ from 'lodash';
 
 @Injectable({
   providedIn: 'root'
@@ -138,65 +141,39 @@ export class DataService {
   addGroup(eventId: string, group: Group) {
     const eventRef = this.db.firestore.collection('events').doc(eventId);
     const groupRef = this.db.firestore.collection('groups').doc();
-    // const setCriteria = groupRef.set(group);
 
-    const transaction = this.db.firestore
+    this.db.firestore
       .runTransaction(t => {
-        return t
-          .get(eventRef)
-          .then(doc => {
-            if (doc) {
-              return doc;
-            } else {
-              console.log('No event document exists');
+        return Promise.all([t.get(eventRef), t.get(groupRef)])
+          .then(docs => {
+            const [eventObj, groupObj] = docs;
+            if (eventObj && groupObj) {
+              const fullEvent = eventObj.data();
+              const newEventGroup = {
+                ...group,
+                id: groupObj.id,
+                criteria: fullEvent.criteria.map(c => {
+                  c.value = 0;
+                  c.vote = 0;
+                  return c;
+                })
+              };
+              fullEvent.groups.push(newEventGroup);
+              group.belongsToEvent.push(eventObj.id);
+
+              return Promise.all([
+                t.set(eventObj.ref, fullEvent),
+                t.set(groupObj.ref, group)
+              ]);
             }
           })
-          .then(eventDoc => {
-            return t
-              .get(groupRef)
-              .then(doc => {
-                console.log(doc.id);
-                if (doc) {
-                  t.set(doc.ref, group);
-                  const eventData = eventDoc.data();
-                  const eventGroups = eventData.groups;
-                  group.id = doc.id;
-                  const newGroupCriteria = [...eventData.criteria];
-                  newGroupCriteria.map(c => {
-                    c.value = 0;
-                    c.vote = 0;
-                    return c;
-                  });
-                  if (eventData.groups && eventGroups.length !== 0) {
-                    eventGroups.push(group);
-                    eventGroups.forEach(g => {
-                      g.criteria = [...newGroupCriteria];
-                    });
-                    const newEvent = eventData;
-                    t.set(eventRef, newEvent, { merge: true });
-                  } else {
-                    eventData.groups = [group];
-                    eventData.groups[0].criteria = [...newGroupCriteria];
-                    const newEvent = eventData;
-                    t.set(eventRef, newEvent, { merge: true });
-                  }
-                } else {
-                  console.log('Cannot find group');
-                }
-              })
-              .catch(err => {
-                console.log('Cant Get Group: ', err);
-              });
-          })
-          .catch(err => {
-            console.log('No Event Doc available: ', err);
+          .then(docs => {
+            console.log('Promise successful');
+            // Return information to the users
           });
       })
-      .then(result => {
-        console.log('Transaction successful!');
-      })
       .catch(err => {
-        console.log('Transaction failed: ', err);
+        console.log('Promise failed!');
       });
   }
 
@@ -257,6 +234,7 @@ export class DataService {
     >(`votes/${eventId}_${groupId}_${userId}`);
     return voteDoc.valueChanges().pipe(
       map(d => {
+        console.log(d);
         if (!d) {
           console.log('Document does not exist, create empty vote');
           const voteD: VoteDocument = {
@@ -287,6 +265,23 @@ export class DataService {
     );
   }
 
+  updateVoteForGroup(eventId, group, user) {
+    console.log(eventId);
+    console.log(group);
+    console.log(user);
+    const voteDoc: AngularFirestoreDocument<VoteDocument> = this.db.doc<
+      VoteDocument
+    >(`votes/${eventId}_${group.id}_${user.uid}`);
+    const eventDoc: AngularFirestoreDocument<Event> = this.db.doc<Event>(
+      'events/' + eventId
+    );
+    combineLatest(voteDoc.valueChanges(), eventDoc.valueChanges()).subscribe(
+      values => {
+        console.log(values);
+      }
+    );
+  }
+
   // Commit Vote Transaction
   voteForGroup(
     eventId: string,
@@ -299,7 +294,7 @@ export class DataService {
       .collection('votes')
       .doc(`${eventId}_${groupId}_${userId}`);
 
-    const transaction = this.db.firestore
+    this.db.firestore
       .runTransaction(t => {
         return Promise.all([t.get(eventRef), t.get(voteRef)]).then(result => {
           // Set current Vote state on Event and Vote
@@ -309,7 +304,7 @@ export class DataService {
             group => group.id === groupId
           );
 
-          // set weather vote have been added to event
+          // set weather vote has been added to event
           newVotes.counted = true;
           // voteDifference used to update event group vote
           const voteDifference = this.compareVote(currentVote, newVotes);
@@ -326,6 +321,14 @@ export class DataService {
             });
             return c;
           });
+
+          // for (let x = 0; x < currentEvent.criteria.length; x++) {
+          //   console.log(
+          //     _.findIndex(currentVote.votes, {
+          //       id: currentEvent.criteria[x].id
+          //     })
+          //   );
+          // }
 
           // Set New Vote State
           t.set(eventRef, currentEvent);

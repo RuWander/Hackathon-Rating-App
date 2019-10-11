@@ -4,7 +4,14 @@ import { Location } from '@angular/common';
 import { DataService } from '../core/data.service';
 import { Observable, combineLatest } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { Event, Group, Criteria, Vote, VoteDocument, User } from '../core/data-types';
+import {
+  Event,
+  Group,
+  Criteria,
+  Vote,
+  VoteDocument,
+  User
+} from '../core/data-types';
 import { AuthService } from '../core/auth.service';
 
 @Component({
@@ -13,7 +20,6 @@ import { AuthService } from '../core/auth.service';
   styleUrls: ['./voting-page.component.css']
 })
 export class VotingPageComponent implements OnInit {
-
   private eventId: string;
   private groupId: string;
   private event$: Observable<Event>;
@@ -33,34 +39,39 @@ export class VotingPageComponent implements OnInit {
     private location: Location,
     private dataService: DataService,
     private auth: AuthService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.eventId = this.route.snapshot.paramMap.get('id');
     this.groupId = this.route.snapshot.paramMap.get('groupId');
     combineLatest(
-      this.event$ = this.dataService.getEvent(this.eventId).pipe(),
-      this.group$ = this.dataService.getGroup(this.groupId).pipe(),
+      (this.event$ = this.dataService.getEvent(this.eventId).pipe()),
+      (this.group$ = this.dataService.getGroup(this.groupId).pipe()),
       this.user$
-      )
-      .subscribe(values => {
+    ).subscribe(values => {
       // console.log(values);
       let grp: Group = {
         name: ''
       };
       const group = values[0].groups;
-      for (let i =0; i < group.length; i++) {
+      for (let i = 0; i < group.length; i++) {
         if (group[i].id === this.groupId) {
           grp = group[i];
         }
       }
 
-      // console.log(grp);
-      this.groupCriteria$ = this.dataService.createVoteForGroup(this.eventId, this.groupId, values[2].uid, [...grp.criteria]);
-      this.groupCriteria$.subscribe(g => this.groupCriteria = g);
-      this.user$.subscribe(u => this.user = u);
-    });
+      // this.dataService.updateVoteForGroup(this.eventId, values[1], values[2]);
 
+      // console.log(grp);
+      this.groupCriteria$ = this.dataService.createVoteForGroup(
+        this.eventId,
+        this.groupId,
+        values[2].uid,
+        [...grp.criteria]
+      );
+      this.groupCriteria$.subscribe(g => (this.groupCriteria = g));
+      this.user$.subscribe(u => (this.user = u));
+    });
   }
 
   goBack() {
@@ -69,7 +80,11 @@ export class VotingPageComponent implements OnInit {
   }
 
   submitVote() {
-    this.dataService.voteForGroup(this.eventId, this.groupId, this.groupCriteria, this.user.uid);
+    this.dataService.voteForGroup(
+      this.eventId,
+      this.groupId,
+      this.groupCriteria,
+      this.user.uid
+    );
   }
-
 }

@@ -70,7 +70,7 @@ export class AuthService {
 
   // Notify when email is already in use
   async register(user) {
-    let credential = await this.afAuth.auth.createUserWithEmailAndPassword(
+    const credential = await this.afAuth.auth.createUserWithEmailAndPassword(
       user.email,
       user.password
     );

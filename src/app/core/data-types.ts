@@ -14,7 +14,8 @@ export interface Group {
   description?: string;
   members?: string[];
   name: string;
-  criteria?: Criteria[];
+  criteria?: Criteria[]; // Enforce Later
+  belongsToEvent?: string[]; // Enforce Later
 }
 
 export interface User {

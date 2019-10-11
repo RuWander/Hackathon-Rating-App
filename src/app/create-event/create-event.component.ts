@@ -79,7 +79,12 @@ export class CreateEventComponent implements OnInit {
 
   createEvent() {
     console.log(this.eventForm.value);
-    this.dataService.createEvent(this.eventForm.value).then(docRef => {
+    const eventObject = {
+      ...this.eventForm.value,
+      groups: [],
+      criteria: []
+    };
+    this.dataService.createEvent(eventObject).then(docRef => {
       console.log('This is the id if the new Event created');
       console.log(docRef ? (docRef as DocumentReference).id : 'void'); // docRef of type void | DocumentReference
       this.router.navigate(['events/' + docRef.id + '/edit']);
@@ -96,7 +101,11 @@ export class CreateEventComponent implements OnInit {
 
   addGroup() {
     this.groupLoading = true;
-    this.dataService.addGroup(this.id, this.groupForm.value);
+    const newGroupObj = {
+      ...this.groupForm.value,
+      belongsToEvent: []
+    };
+    this.dataService.addGroup(this.id, newGroupObj);
     this.groupLoading = false;
   }
 
