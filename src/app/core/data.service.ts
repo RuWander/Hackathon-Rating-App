@@ -72,56 +72,38 @@ export class DataService {
   addEventCriteria(eventId: string, criteria: Criteria) {
     const eventRef = this.db.firestore.collection('events').doc(eventId);
     const criteriaRef = this.db.firestore.collection('criteria').doc();
-    const setCriteria = criteriaRef.set(criteria);
 
-    const transaction = this.db.firestore
+    this.db.firestore
       .runTransaction(t => {
-        return t
-          .get(criteriaRef)
-          .then(doc => {
-            if (doc) {
-              return doc;
-            } else {
-              console.log('No criteria document exists');
-            }
-          })
-          .then(critDoc => {
-            return t.get(eventRef).then(doc => {
-              const d = doc.data();
-              const c = critDoc.data();
-              const newCritDoc = { id: critDoc.id, ...c };
-
-              if (doc) {
-                // console.log(newCritDoc);
-                t.update(criteriaRef, critDoc.data());
-                if (d.criteria) {
-                  d.criteria.push(newCritDoc);
-                  const groups = d.groups;
-                  if (groups) {
-                    groups.forEach(group => {
-                      const groupCriteria = group.criteria;
-                      const groupCrit = { value: 0, votes: 0, ...newCritDoc };
-                      if (group.criteria) {
-                        console.log(groupCriteria);
-                        groupCriteria.push(groupCrit);
-                      } else {
-                        group.criteria = [groupCrit];
-                      }
-                    });
-                  }
-                  t.set(eventRef, d, { merge: true });
-                } else {
-                  t.set(eventRef, { criteria: [newCritDoc] }, { merge: true });
-                }
-              } else {
-                console.log('No event document exists');
-              }
+        return Promise.all([t.get(eventRef), t.get(criteriaRef)]).then(
+          documents => {
+            const [eventDoc, critDoc] = documents;
+            const eventData = eventDoc.data();
+            const newCrit = {
+              id: critDoc.id,
+              ...criteria
+            };
+            // Add new criteria to the event criteria key
+            eventData.criteria.push(newCrit);
+            // Add criteria to for voting to each group
+            eventData.groups.map(g => {
+              g.criteria.push({
+                value: 0,
+                votes: 0,
+                ...newCrit
+              });
             });
-          })
-          .catch(err => console.log('Doc does not exist: ', err));
+            // Set separate Crit document
+            t.set(criteriaRef, criteria);
+            // Update event with new citeria objects
+            t.set(eventRef, eventData);
+          }
+        );
       })
-      .then(result => console.log('Transaction successful: ', result))
-      .catch(err => console.log('Transaction failure: ', err));
+      .then(result => {
+        console.log('Transaction succeeded!');
+      })
+      .catch(err => console.log);
   }
 
   updateEvent(id: string, event: Event) {
