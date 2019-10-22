@@ -1,62 +1,63 @@
-<div fxLayoutAlign="center stretch" fxLayout='column' class='wrapper'>
-  <div fxLayout='row'>
-    <div fxFlex="70" class='wrapper-content'>
-      <div fxLayout='row' fxLayoutAlign="space-between center">
+<div fxLayoutAlign="center stretch" fxLayout="column" class="wrapper">
+  <div fxLayout="row">
+    <div fxFlex="70" class="wrapper-content">
+      <div fxLayout="row" fxLayoutAlign="space-between center">
         <h1>Event Details</h1>
-        <div fxLayoutGap='10px'>
-          <button mat-raised-button color='accent' (click)='editEvent()'>Edit</button>
-          <button mat-raised-button color='primary' (click)='editEvent()'>Vote</button>
+        <div fxLayoutGap="10px">
+          <button *ngIf="!event?.voting" mat-raised-button color="accent" (click)="editEvent()">
+            Edit
+          </button>
+          <button mat-raised-button color="primary" (click)="eventVotingDialog()">
+            Initiate Voting
+          </button>
         </div>
       </div>
     </div>
   </div>
-  <div fxLayout='row' *ngIf="event$ | async as event">
-    <div fxFlex="70" fxLayout='row' fxLayout.xs='column' fxLayout.sm='column' fxLayoutAlign="center start"
-      fxLayoutAlign.xs="center stretch" fxLayoutAlign.sm="center stretch" fxLayoutGap="20px" class='wrapper-content'>
-      <mat-card fxFlex="60" fxFlex.xs='100' fxFlex.sm='100' class="main-content">
+  <div fxLayout="row" *ngIf="event$ | async as event">
+    <div fxFlex="70" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="center start"
+      fxLayoutAlign.xs="center stretch" fxLayoutAlign.sm="center stretch" fxLayoutGap="20px" class="wrapper-content">
+      <mat-card fxFlex="60" fxFlex.xs="100" fxFlex.sm="100" class="main-content">
         <mat-card-content>
-
-
-          <h1>{{  event.title }}</h1>
+          <h1>{{ event.title }}</h1>
 
           <h3>DATE</h3>
           <p>{{ event.date | date }}</p>
-
 
           <h3>DESCRIPTION</h3>
           <p>{{ event.description }}</p>
 
           <mat-divider></mat-divider>
-          <br>
+          <br />
           <h3>ADD CRITERIA</h3>
           <mat-list dense>
             <mat-list-item *ngFor="let crit of event.criteria">
               <mat-icon mat-list-icon>star_border</mat-icon>
-              <h4 mat-line>{{crit.name}} ( {{ crit.critStart }} / {{ crit.critEnd }} )</h4>
+              <h4 mat-line>
+                {{ crit.name }} ( {{ crit.critStart }} / {{ crit.critEnd }} )
+              </h4>
               <mat-divider></mat-divider>
             </mat-list-item>
           </mat-list>
-
         </mat-card-content>
       </mat-card>
 
-      <mat-card fxFlex="40" fxFlex.xs='100' fxFlex.sm='100' class='side-content'>
+      <mat-card fxFlex="40" fxFlex.xs="100" fxFlex.sm="100" class="side-content">
         <mat-card-content>
           <h3>GROUPS</h3>
-          <div fxLayout='column' fxLayoutGap="20px">
-            <mat-card *ngFor='let group of event.groups; let i = index'>
+          <div fxLayout="column" fxLayoutGap="20px">
+            <mat-card *ngFor="let group of event.groups; let i = index">
               <mat-card-content>
-                <h3>{{group.name}}</h3>
+                <h3>{{ group.name }}</h3>
                 <span fxFlex></span>
-                <button mat-raised-button color='primary' (click)='voteGroup(group.id)'>Vote</button>
+                <button *ngIf="event.voting" mat-raised-button color="primary" (click)="voteGroup(group.id)">
+                  Vote
+                </button>
               </mat-card-content>
             </mat-card>
           </div>
-
         </mat-card-content>
       </mat-card>
     </div>
   </div>
-
-
 </div>

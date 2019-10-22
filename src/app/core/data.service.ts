@@ -113,6 +113,13 @@ export class DataService {
     return eventDoc.update(event);
   }
 
+  updateEventField(id: string, fields: any) {
+    const eventDoc: AngularFirestoreDocument<Event> = this.db.doc(
+      'events/' + id
+    );
+    return eventDoc.update(fields);
+  }
+
   removeEvent(id: string) {
     const eventDoc: AngularFirestoreDocument<Event> = this.db.doc(
       'events/' + id

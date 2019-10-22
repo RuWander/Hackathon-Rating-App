@@ -30,6 +30,7 @@ import { EventDetailComponent } from './event-detail/event-detail.component';
 import { EventsResultsDisplayComponent } from './events-results-display/events-results-display.component';
 import { ResultsBlocksComponent } from './results-blocks/results-blocks.component';
 import { DeleteEventDialogComponent } from './delete-event-dialog/delete-event-dialog.component';
+import { EventVotingDialogComponent } from './event-voting-dialog/event-voting-dialog.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { DeleteEventDialogComponent } from './delete-event-dialog/delete-event-d
     EventDetailComponent,
     EventsResultsDisplayComponent,
     ResultsBlocksComponent,
-    DeleteEventDialogComponent
+    DeleteEventDialogComponent,
+    EventVotingDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -67,6 +69,6 @@ import { DeleteEventDialogComponent } from './delete-event-dialog/delete-event-d
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [DeleteEventDialogComponent]
+  entryComponents: [DeleteEventDialogComponent, EventVotingDialogComponent]
 })
-export class AppModule {}
+export class AppModule { }

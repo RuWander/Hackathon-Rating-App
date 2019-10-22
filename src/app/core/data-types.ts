@@ -7,6 +7,7 @@ export interface Event {
   description: string;
   groups?: Group[];
   criteria?: Criteria[];
+  voting: boolean;
 }
 
 export interface Group {

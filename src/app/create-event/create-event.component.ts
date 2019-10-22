@@ -29,7 +29,7 @@ export class CreateEventComponent implements OnInit {
     private router: Router,
     private dataService: DataService,
     public dialog: MatDialog
-  ) {}
+  ) { }
 
   eventForm = new FormGroup({
     title: new FormControl(''),
@@ -82,7 +82,8 @@ export class CreateEventComponent implements OnInit {
     const eventObject = {
       ...this.eventForm.value,
       groups: [],
-      criteria: []
+      criteria: [],
+      voting: false
     };
     this.dataService.createEvent(eventObject).then(docRef => {
       console.log('This is the id if the new Event created');
