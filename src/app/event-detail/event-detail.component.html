@@ -4,11 +4,17 @@
       <div fxLayout="row" fxLayoutAlign="space-between center">
         <h1>Event Details</h1>
         <div fxLayoutGap="10px">
-          <button *ngIf="!event?.voting" mat-raised-button color="accent" (click)="editEvent()">
+          <button mat-raised-button color="accent" (click)="editEvent()">
             Edit
           </button>
-          <button mat-raised-button color="primary" (click)="eventVotingDialog()">
+          <button mat-raised-button color="primary" (click)="eventVotingDialog()" *ngIf="!event?.voting">
             Initiate Voting
+          </button>
+          <button mat-raised-button color="primary" *ngIf="event?.voting">
+            Voting Started
+          </button>
+          <button mat-raised-button color="warn" *ngIf="event?.voting">
+            Close Voting
           </button>
         </div>
       </div>

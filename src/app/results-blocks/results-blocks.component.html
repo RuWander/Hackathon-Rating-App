@@ -1,5 +1,5 @@
 <div *ngFor="let event of eventsData">
-  <mat-card class="results-card">
+  <mat-card class="results-card" *ngIf="event.voting">
     <mat-card-header>
       <!-- <div mat-card-avatar class="example-header-image"></div> -->
       <mat-card-title>{{ event.title }}</mat-card-title>
@@ -13,19 +13,10 @@
         <!-- Render the criteria circles -->
         <div fxLayout="row" fxLayoutAlign="space-between center">
           <ng-container *ngFor="let total of groupTotals">
-            <div
-              *ngIf="total.id === group.id"
-              fxLayout="column"
-              fxLayoutAlign="center center"
-            >
+            <div *ngIf="total.id === group.id" fxLayout="column" fxLayoutAlign="center center">
               <div fxLayout="column" fxLayoutAlign="center center">
                 <div fxLayoutAlign="center center" class="spinnerOuter">
-                  <mat-progress-spinner
-                    class="spinnerPos"
-                    color="accent"
-                    mode="determinate"
-                    [value]="total.totalValue"
-                  >
+                  <mat-progress-spinner class="spinnerPos" color="accent" mode="determinate" [value]="total.totalValue">
                   </mat-progress-spinner>
                   <div class="spinnerInner">{{ total.totalValue }} %</div>
                 </div>
@@ -34,18 +25,9 @@
             </div>
             <!-- Render the total circle end -->
           </ng-container>
-          <div
-            *ngFor="let criteria of group.criteria"
-            fxLayout="column"
-            fxLayoutAlign="center center"
-          >
+          <div *ngFor="let criteria of group.criteria" fxLayout="column" fxLayoutAlign="center center">
             <div fxLayoutAlign="center center" class="spinnerOuter">
-              <mat-progress-spinner
-                class="spinnerPos"
-                color="primary"
-                mode="determinate"
-                [value]="criteria.value"
-              >
+              <mat-progress-spinner class="spinnerPos" color="primary" mode="determinate" [value]="criteria.value">
               </mat-progress-spinner>
               <div class="spinnerInner">{{ criteria.value }} %</div>
             </div>
