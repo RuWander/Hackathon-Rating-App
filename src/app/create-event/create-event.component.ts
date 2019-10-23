@@ -85,7 +85,8 @@ export class CreateEventComponent implements OnInit {
       ...this.eventForm.value,
       groups: [],
       criteria: [],
-      voting: false
+      voting: false,
+      votingClosed: false
     };
     this.dataService.createEvent(eventObject).then(docRef => {
       console.log('This is the id if the new Event created');

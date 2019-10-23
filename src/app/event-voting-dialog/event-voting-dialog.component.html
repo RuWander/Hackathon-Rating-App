@@ -1,11 +1,26 @@
-<h1 mat-dialog-title>Voting for {{ data.eventTitle }} will be initiated!</h1>
-<div mat-dialog-content>
-  <p>Do you confirm that the voting can start for this event?</p>
-  <p>This means that you will not be able to add groups or criteria to the event</p>
-</div>
-<div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="false">No Thanks</button>
-  <button mat-raised-button color="primary" [mat-dialog-close]="true">
-    Start Voting
-  </button>
-</div>
+<ng-container *ngIf="!data.voting">
+  <h1 mat-dialog-title>Voting for {{ data.eventTitle }} will be initiated!</h1>
+  <div mat-dialog-content>
+    <p>Do you confirm that the voting can start for this event?</p>
+    <p>This means that you will not be able to add groups or criteria to the event</p>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="{votingInit:false, closeVoting:false}">No Thanks</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="{votingInit:true, closeVoting: false}">
+      Start Voting
+    </button>
+  </div>
+</ng-container>
+<ng-container *ngIf="!data.votingClosed && data.voting">
+  <h1 mat-dialog-title>Voting for {{ data.eventTitle }} will be closed!</h1>
+  <div mat-dialog-content>
+    <p>This will close the voting sessions and ensure that no more votes are submitted</p>
+    <p>Would you like to continue with closing the voting session?</p>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="{votingInit:false, closeVoting: false}">No Thanks</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="{votingInit:false, closeVoting: true}">
+      Close Voting
+    </button>
+  </div>
+</ng-container>

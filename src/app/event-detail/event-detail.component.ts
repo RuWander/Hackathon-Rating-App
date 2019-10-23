@@ -33,7 +33,7 @@ export class EventDetailComponent implements OnInit {
     this.event$ = this.dataService.getEvent(this.id).pipe(
       map(data => {
         if (data) {
-          console.log('this is the data: ' + data);
+          console.log(data);
           this.event = data;
           if (data.date) {
             data.date = data.date.toDate();
@@ -63,20 +63,33 @@ export class EventDetailComponent implements OnInit {
     console.log('This will delete event');
     const dialogRef = this.dialog.open(EventVotingDialogComponent, {
       // width: '35%',
-      data: { id: this.id, eventTitle: this.event.title }
+      data: { id: this.id, eventTitle: this.event.title, voting: this.event.voting, votingClosed: this.event.votingClosed }
     });
 
-    dialogRef.afterClosed().subscribe(deleteResult => {
+    dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      console.log(deleteResult);
-      if (deleteResult) {
-        console.log(
-          'This will start the voting session in this event'
-        );
+      console.log(result);
+      if (result.votingInit) {
+        console.log('voting will start now');
         this.dataService.updateEventField(this.id, { voting: true });
       } else {
-        console.log('The voting session will not be started');
+        console.log('Voting will not be initialised');
       }
+
+      if (result.closeVoting) {
+        console.log('Voting will be closed');
+        this.dataService.updateEventField(this.id, { votingClosed: true });
+      } else {
+        console.log('Voting will not be closed');
+      }
+      // if (result) {
+      //   console.log(
+      //     'This will start the voting session in this event'
+      //   );
+      //   this.dataService.updateEventField(this.id, { voting: true });
+      // } else {
+      //   console.log('The voting session will not be started');
+      // }
     });
   }
 }
