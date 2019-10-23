@@ -19,6 +19,7 @@ import { DeleteEventDialogComponent } from '../delete-event-dialog/delete-event-
 })
 export class CreateEventComponent implements OnInit {
   id = '';
+  addExtras: boolean;
   editing = false;
   private currentEvent$: Observable<Event>;
   event: Event;
@@ -50,6 +51,7 @@ export class CreateEventComponent implements OnInit {
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
     console.log(`This is the ID: ${this.id}`);
+    this.addExtras = this.id ? false : true;
     if (this.id) {
       this.editing = true;
       // console.log(`this is the ID: ${this.id}`)
