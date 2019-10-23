@@ -17,6 +17,7 @@ export interface Group {
   name: string;
   criteria?: Criteria[]; // Enforce Later
   belongsToEvent?: string[]; // Enforce Later
+  critTotal?: number;
 }
 
 export interface User {
