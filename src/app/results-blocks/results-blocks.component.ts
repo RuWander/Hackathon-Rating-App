@@ -18,6 +18,7 @@ export class ResultsBlocksComponent implements OnInit {
   ngOnInit() {
     this.dataService.getEvents().subscribe(events => {
       this.eventsData = events;
+      this.groupTotals = [];
       events.map(event => {
         event.groups.forEach(group => {
           const newGroup = { id: group.id, totalValue: 0 };
