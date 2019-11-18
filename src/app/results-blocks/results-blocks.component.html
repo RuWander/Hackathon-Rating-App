@@ -11,6 +11,7 @@
       <div *ngFor="let group of event.groups">
         <h3>{{ group.name }}</h3>
         <!-- Render the criteria circles -->
+        <ng-container *ngIf="!smallView">
         <div fxLayout="row" fxLayoutAlign="space-between center">
           <ng-container *ngFor="let total of groupTotals">
             <div *ngIf="total.id === group.id" fxLayout="column" fxLayoutAlign="center center">
@@ -35,6 +36,28 @@
           </div>
           <!-- Render the total Circle -->
         </div>
+        </ng-container>
+
+
+        <!-- This view is for mobile devices and small screens -->
+        <ng-container *ngIf="smallView">
+        <div fxLayout="column" fxLayoutAlign="start stretch">
+          <ng-container *ngFor="let total of groupTotals">
+            <div *ngIf="total.id === group.id" >
+              <!-- <div fxLayout="column" fxLayoutAlign="center center"> -->
+                <mat-progress-bar mode="determinate" color="accent" [value]="total.totalValue"></mat-progress-bar>
+                <h5>TOTAL {{ total.totalValue }} %</h5>
+              <!-- </div> -->
+            </div>
+          </ng-container>
+          <div *ngFor="let criteria of group.criteria" >
+            <mat-progress-bar mode="determinate" [value]="criteria.value"></mat-progress-bar>
+            <h5>{{ criteria.name }} {{ criteria.value }} %</h5>
+          </div>
+        </div>
+      </ng-container>
+
+
         <mat-divider></mat-divider>
       </div>
     </mat-card-content>

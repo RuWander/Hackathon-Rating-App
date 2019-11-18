@@ -31,6 +31,7 @@ import { EventsResultsDisplayComponent } from './events-results-display/events-r
 import { ResultsBlocksComponent } from './results-blocks/results-blocks.component';
 import { DeleteEventDialogComponent } from './delete-event-dialog/delete-event-dialog.component';
 import { EventVotingDialogComponent } from './event-voting-dialog/event-voting-dialog.component';
+import { LayoutModule } from '@angular/cdk/layout';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { EventVotingDialogComponent } from './event-voting-dialog/event-voting-d
     ReactiveFormsModule,
     MatInputModule,
     FlexLayoutModule,
-    MatDialogModule
+    MatDialogModule,
+    LayoutModule
   ],
   providers: [
     DeleteEventDialogComponent,
